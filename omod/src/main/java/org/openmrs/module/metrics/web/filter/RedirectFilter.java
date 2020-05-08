@@ -15,35 +15,35 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class RedirectFilter implements Filter {
-
+	
 	private static final Logger log = LoggerFactory.getLogger(RedirectFilter.class);
-
+	
 	private String sourceUrl = null;
-
+	
 	private String targetUrl = null;
-
+	
 	@Override
 	public void init(FilterConfig filterConfig) {
 		sourceUrl = filterConfig.getInitParameter("source-url");
 		targetUrl = filterConfig.getInitParameter("target-url");
 	}
-
+	
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
-		if (request instanceof HttpServletRequest && response instanceof HttpServletResponse && StringUtils
-				.isNotBlank(sourceUrl) && StringUtils.isNotBlank(targetUrl)) {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+	        ServletException {
+		if (request instanceof HttpServletRequest && response instanceof HttpServletResponse
+		        && StringUtils.isNotBlank(sourceUrl) && StringUtils.isNotBlank(targetUrl)) {
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
-			request.getRequestDispatcher(httpRequest.getRequestURI().replace(sourceUrl, targetUrl))
-					.forward(request, response);
+			request.getRequestDispatcher(httpRequest.getRequestURI().replace(sourceUrl, targetUrl)).forward(request,
+			    response);
 		} else {
 			log.debug("Skipping request {}", request);
 			chain.doFilter(request, response);
 		}
 	}
-
+	
 	@Override
 	public void destroy() {
-
+		
 	}
 }

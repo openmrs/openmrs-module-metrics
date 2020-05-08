@@ -28,24 +28,24 @@ import org.springframework.stereotype.Component;
 public class MetricsActivator extends BaseModuleActivator implements ApplicationContextAware, DaemonTokenAware {
 	
 	private static final Logger log = LoggerFactory.getLogger(MetricsActivator.class);
-
+	
 	private static volatile ApplicationContext applicationContext = null;
-
+	
 	private static volatile DaemonToken daemonToken = null;
-
+	
 	private MetricsManager metricsManager;
-
+	
 	/**
 	 * @see #started()
 	 */
 	public void started() {
 		applicationContext.getAutowireCapableBeanFactory().autowireBean(this);
-
+		
 		metricsManager = new MetricsManager();
 		metricsManager.setToken(daemonToken);
 		metricsManager.addClassToMonitor(Encounter.class);
 		metricsManager.start();
-
+		
 		log.info("Started Metrics");
 	}
 	
@@ -54,10 +54,10 @@ public class MetricsActivator extends BaseModuleActivator implements Application
 	 */
 	public void shutdown() {
 		metricsManager.stop();
-
+		
 		log.info("Shutdown Metrics");
 	}
-
+	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		if (MetricsActivator.applicationContext == null) {
@@ -68,7 +68,7 @@ public class MetricsActivator extends BaseModuleActivator implements Application
 			}
 		}
 	}
-
+	
 	@Override
 	public void setDaemonToken(DaemonToken token) {
 		if (MetricsActivator.daemonToken == null) {
