@@ -16,20 +16,13 @@ import org.openmrs.module.DaemonTokenAware;
 import org.openmrs.module.metrics.api.MetricsManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
 
 /**
  * This class contains the logic that is run every time this module is either started or shutdown
  */
-@Component
-public class MetricsActivator extends BaseModuleActivator implements ApplicationContextAware, DaemonTokenAware {
+public class MetricsActivator extends BaseModuleActivator implements DaemonTokenAware {
 	
 	private static final Logger log = LoggerFactory.getLogger(MetricsActivator.class);
-	
-	private static volatile ApplicationContext applicationContext = null;
 	
 	private static volatile DaemonToken daemonToken = null;
 	
@@ -39,10 +32,7 @@ public class MetricsActivator extends BaseModuleActivator implements Application
 	 * @see #started()
 	 */
 	public void started() {
-		applicationContext.getAutowireCapableBeanFactory().autowireBean(this);
-		
-		metricsManager = new MetricsManager();
-		metricsManager.setToken(daemonToken);
+		metricsManager = new MetricsManager(daemonToken);
 		metricsManager.addClassToMonitor(Encounter.class);
 		metricsManager.start();
 		
@@ -52,22 +42,11 @@ public class MetricsActivator extends BaseModuleActivator implements Application
 	/**
 	 * @see #stopped()
 	 */
-
+	
 	public void stopped() {
 		metricsManager.stop();
 		
 		log.info("Shutdown Metrics");
-	}
-	
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		if (MetricsActivator.applicationContext == null) {
-			synchronized (MetricsActivator.class) {
-				if (MetricsActivator.applicationContext == null) {
-					MetricsActivator.applicationContext = applicationContext;
-				}
-			}
-		}
 	}
 	
 	@Override

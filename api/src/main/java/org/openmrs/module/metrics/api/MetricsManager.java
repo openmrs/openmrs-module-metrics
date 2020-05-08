@@ -13,6 +13,10 @@ public class MetricsManager {
 	
 	private DaemonToken token;
 	
+	public MetricsManager(DaemonToken token) {
+		this.token = token;
+	}
+	
 	private Set<Class<? extends OpenmrsObject>> classesToMonitor = new HashSet<Class<? extends OpenmrsObject>>();
 	
 	private final MetricsEventListener eventListener = new MetricsEventListener();
@@ -53,7 +57,7 @@ public class MetricsManager {
 		this.classesToMonitor = classesToMonitor;
 	}
 	
-	public void setToken(DaemonToken token) {
-		this.token = token;
-	}
+	//	public void setToken(DaemonToken token) {
+	//		this.token = token;
+	//	}
 }
