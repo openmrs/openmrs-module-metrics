@@ -50,9 +50,10 @@ public class MetricsActivator extends BaseModuleActivator implements Application
 	}
 	
 	/**
-	 * @see #shutdown()
+	 * @see #stopped()
 	 */
-	public void shutdown() {
+
+	public void stopped() {
 		metricsManager.stop();
 		
 		log.info("Shutdown Metrics");
