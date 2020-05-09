@@ -4,5 +4,34 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
- 
+    <changeSet author="OpenMRS" id="org.openmrs.module.atomfeed-2017-11-08-10:22">
+        <validCheckSum>3:ce20ea9f79b936f10010d668ef669ca7</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="metric_event_records" /></not>
+        </preConditions>
+        <createTable tableName="metric_event_records">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="uuid" type="varchar(40)" />
+            <column name="title" type="varchar(255)" />
+            <column name="timestamp" type="timestamp" defaultValueDate="CURRENT_TIMESTAMP"/>
+            <column name="uri" type="varchar(255)" />
+            <column name="object" type="varchar(1000)" />
+            <column name="category" type="varchar(255)" />
+            <column name="date_created" type="timestamp" />
+            <column name="tags" type="varchar(255)" />
+        </createTable>
+        <createTable tableName="metric_failed_events">
+            <column name="id" type="serial">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="feed_uri" type="varchar(255)"/>
+            <column name="failed_at" type="timestamp"/>
+            <column name="error_message" type="LONGTEXT"/>
+            <column name="event_id" type="varchar(255)"/>
+            <column name="event_content" type="LONGTEXT"/>
+            <column name="tags" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>
