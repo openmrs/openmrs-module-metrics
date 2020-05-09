@@ -52,7 +52,7 @@ public class MetricsActivator extends BaseModuleActivator implements Application
 	/**
 	 * @see #stopped()
 	 */
-
+	
 	public void stopped() {
 		metricsManager.stop();
 		
