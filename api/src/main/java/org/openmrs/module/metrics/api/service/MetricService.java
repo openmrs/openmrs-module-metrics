@@ -1,4 +1,4 @@
-package org.openmrs.module.metrics.api;
+package org.openmrs.module.metrics.api.service;
 
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.metrics.MetricEvent;

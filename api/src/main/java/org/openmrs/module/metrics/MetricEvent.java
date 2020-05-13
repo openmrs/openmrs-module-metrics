@@ -24,9 +24,9 @@ public class MetricEvent extends BaseOpenmrsObject implements Serializable {
 	private String category;
 	
 	private String tags;
-
+	
 	private LocalDateTime dateCreated;
-
+	
 	public MetricEvent(String uuid, String title, LocalDateTime timeStamp, URI uri, String serializedContents,
 	    String category, LocalDateTime dateCreated) {
 		this.uuid = uuid;
@@ -59,11 +59,11 @@ public class MetricEvent extends BaseOpenmrsObject implements Serializable {
 	public URI getUri() {
 		return uri;
 	}
-
+	
 	public String getSerializedContents() {
 		return serializedContents;
 	}
-
+	
 	public String getTitle() {
 		return title;
 	}
@@ -75,9 +75,9 @@ public class MetricEvent extends BaseOpenmrsObject implements Serializable {
 	public String getTags() {
 		return tags;
 	}
-
+	
 	public LocalDateTime getDateCreated() {
 		return dateCreated;
 	}
-
+	
 }
