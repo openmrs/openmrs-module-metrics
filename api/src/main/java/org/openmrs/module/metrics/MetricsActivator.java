@@ -14,8 +14,10 @@ import org.openmrs.module.BaseModuleActivator;
 import org.openmrs.module.DaemonToken;
 import org.openmrs.module.DaemonTokenAware;
 import org.openmrs.module.metrics.api.MetricsManager;
+import org.openmrs.module.metrics.api.service.EventConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * This class contains the logic that is run every time this module is either started or shutdown
@@ -28,12 +30,21 @@ public class MetricsActivator extends BaseModuleActivator implements DaemonToken
 	
 	private MetricsManager metricsManager;
 	
+	@Autowired
+	private EventConfigurationService eventConfigurationService;
+	
 	/**
 	 * @see #started()
 	 */
 	public void started() {
 		metricsManager = new MetricsManager(daemonToken);
-		metricsManager.addClassToMonitor(Encounter.class);
+		
+		if (eventConfigurationService.getClassesToMonitorFromConfiguration() != null) {
+			metricsManager.addClassesToMonitor(eventConfigurationService.getClassesToMonitorFromConfiguration());
+		} else {
+			metricsManager.addClassToMonitor(Encounter.class);
+		}
+		
 		metricsManager.start();
 		
 		log.info("Started Metrics");

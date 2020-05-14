@@ -49,6 +49,18 @@ public class MetricsManager {
 		classesToMonitor.add(classToMonitor);
 	}
 	
+	public void addClassesToMonitor(Set<Class<? extends OpenmrsObject>> configuredClassesToMonitor) {
+		if (hasStarted) {
+			throw new IllegalStateException("cannot add a class to monitor while already running");
+		}
+		
+		if (classesToMonitor.isEmpty()) {
+			classesToMonitor = configuredClassesToMonitor;
+		} else {
+			classesToMonitor.addAll(configuredClassesToMonitor);
+		}
+	}
+	
 	public void setClassesToMonitor(Set<Class<? extends OpenmrsObject>> classesToMonitor) {
 		if (hasStarted) {
 			throw new IllegalStateException("cannot change classes to monitor while already running");
