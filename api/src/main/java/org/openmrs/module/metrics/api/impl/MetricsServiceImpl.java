@@ -2,10 +2,9 @@ package org.openmrs.module.metrics.api.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.api.OpenmrsService;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.metrics.MetricEvent;
-import org.openmrs.module.metrics.api.MetricService;
+import org.openmrs.module.metrics.api.service.MetricService;
 import org.openmrs.module.metrics.api.db.MetricsDAO;
 
 public class MetricsServiceImpl extends BaseOpenmrsService implements MetricService {

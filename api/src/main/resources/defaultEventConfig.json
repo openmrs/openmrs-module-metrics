@@ -1,0 +1,100 @@
+{
+  "eventFilterBeans": [],
+  "eventConfigurations": [
+
+    {
+      "openMrsClass": "org.openmrs.PersonAddress",
+      "enabled": "true",
+      "title": "PersonAddress",
+      "category": "person_address",
+      "linkTemplates": {
+        "rest": "/ws/rest/v1/person/{parent-uuid}/address/{uuid}?v=full"
+      }
+    },
+    {
+      "openMrsClass": "org.openmrs.PersonName",
+      "enabled": "true",
+      "title": "PersonName",
+      "category": "person_name",
+      "linkTemplates": {
+        "rest": "/ws/rest/v1/person/{parent-uuid}/name/{uuid}?v=full"
+      }
+    },
+    {
+      "openMrsClass": "org.openmrs.PatientIdentifier",
+      "enabled": "true",
+      "title": "PatientIdentifier",
+      "category": "patient_identifier",
+      "linkTemplates": {
+        "rest": "/ws/rest/v1/patient/{parent-uuid}/identifier/{uuid}?v=full"
+      }
+    },
+    {
+      "openMrsClass": "org.openmrs.PersonAttribute",
+      "enabled": "true",
+      "title": "PersonAttribute",
+      "category": "person_attribute",
+      "linkTemplates": {
+        "rest": "/ws/rest/v1/person/{parent-uuid}/attribute/{uuid}?v=full"
+      }
+    },
+    {
+      "openMrsClass": "org.openmrs.Person",
+      "enabled": "true",
+      "title": "Person",
+      "category": "person",
+      "linkTemplates": {
+        "rest": "/ws/rest/v1/person/{uuid}?v=full",
+        "fhir": "/ws/fhir/Person/{uuid}"
+      }
+    },
+    {
+      "openMrsClass": "org.openmrs.User",
+      "enabled": "false",
+      "title": "User",
+      "category": "user",
+      "linkTemplates": {
+        "rest": "/ws/rest/v1/user/{uuid}?v=full"
+      }
+    },
+    {
+      "openMrsClass": "org.openmrs.Patient",
+      "enabled": "true",
+      "title": "Patient",
+      "category": "patient",
+      "linkTemplates": {
+        "rest": "/ws/rest/v1/patient/{uuid}?v=full",
+        "fhir": "/ws/fhir/Patient/{uuid}"
+      }
+    },
+    {
+      "openMrsClass": "org.openmrs.Form",
+      "enabled": "true",
+      "title": "Form",
+      "category": "form",
+      "linkTemplates": {
+        "rest": "/ws/rest/v1/form/{uuid}?v=full"
+      }
+    },
+    {
+      "openMrsClass": "org.openmrs.Obs",
+      "enabled": "true",
+      "title": "Observation",
+      "category": "observation",
+      "linkTemplates": {
+        "rest": "/ws/rest/v1/obs/{uuid}?v=full",
+        "fhir": "/ws/fhir/Observation/{uuid}"
+      }
+    },
+    {
+      "openMrsClass": "org.openmrs.Encounter",
+      "enabled": "true",
+      "title": "Encounter",
+      "category": "encounter",
+      "linkTemplates": {
+        "rest": "/ws/rest/v1/encounter/{uuid}?v=full",
+        "fhir": "/ws/fhir/Encounter/{uuid}"
+      }
+    }
+  ]
+}
