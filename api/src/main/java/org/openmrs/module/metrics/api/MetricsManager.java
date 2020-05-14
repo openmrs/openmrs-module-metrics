@@ -49,15 +49,15 @@ public class MetricsManager {
 		classesToMonitor.add(classToMonitor);
 	}
 	
-	public void setClassesToMonitor(Set<Class<? extends OpenmrsObject>> classesToMonitor) {
+	public void setClassesToMonitor(Set<Class<? extends OpenmrsObject>> setOfClassesToMonitor) {
 		if (hasStarted) {
 			throw new IllegalStateException("cannot change classes to monitor while already running");
 		}
 		
 		if (classesToMonitor.isEmpty()) {
-			classesToMonitor = classesToMonitor;
+			classesToMonitor = setOfClassesToMonitor;
 		} else {
-			classesToMonitor.addAll(classesToMonitor);
+			classesToMonitor.addAll(setOfClassesToMonitor);
 		}
 	}
 }
