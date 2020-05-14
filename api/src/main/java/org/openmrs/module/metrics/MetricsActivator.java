@@ -40,7 +40,7 @@ public class MetricsActivator extends BaseModuleActivator implements DaemonToken
 		metricsManager = new MetricsManager(daemonToken);
 		
 		if (eventConfigurationService.getClassesToMonitorFromConfiguration() != null) {
-			metricsManager.addClassesToMonitor(eventConfigurationService.getClassesToMonitorFromConfiguration());
+			metricsManager.setClassesToMonitor(eventConfigurationService.getClassesToMonitorFromConfiguration());
 		} else {
 			metricsManager.addClassToMonitor(Encounter.class);
 		}
