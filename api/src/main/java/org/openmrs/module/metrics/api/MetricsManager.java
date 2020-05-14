@@ -3,7 +3,6 @@ package org.openmrs.module.metrics.api;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.openmrs.Auditable;
 import org.openmrs.OpenmrsObject;
 import org.openmrs.event.Event;
 import org.openmrs.module.DaemonToken;
@@ -17,7 +16,7 @@ public class MetricsManager {
 		this.token = token;
 	}
 	
-	private Set<Class<? extends OpenmrsObject>> classesToMonitor = new HashSet<Class<? extends OpenmrsObject>>();
+	private Set<Class<? extends OpenmrsObject>> classesToMonitor = new HashSet<>();
 	
 	private final MetricsEventListener eventListener = new MetricsEventListener();
 	

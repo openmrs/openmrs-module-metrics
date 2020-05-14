@@ -52,12 +52,11 @@ public class EventConfigurationServiceImpl extends BaseOpenmrsService implements
 	private void loadEventConfigurations(GeneralConfiguration generalConfiguration) {
 		HashMap<String, EventConfiguration> byCategory = new LinkedHashMap<>();
 		HashMap<String, EventConfiguration> byOpenMrsClass = new LinkedHashMap<>();
-		Set<Class<? extends OpenmrsObject>> classesToMonitor =  new HashSet<Class<? extends OpenmrsObject>>(); ;
+		Set<Class<? extends OpenmrsObject>> classesToMonitor =  new HashSet<>();
 
 		for (EventConfiguration configuration : generalConfiguration.getEventConfigurations()) {
 			byOpenMrsClass.put(configuration.getOpenMrsClass(), configuration);
 			classesToMonitor.add(getOpenMrsClass(configuration.getOpenMrsClass()));
-
 		}
 		eventConfigurationByOpenMrsClass = byOpenMrsClass;
 		feedFilters = generalConfiguration.getEventFilterBeans();
