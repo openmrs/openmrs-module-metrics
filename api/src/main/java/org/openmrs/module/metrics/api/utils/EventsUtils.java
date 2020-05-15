@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.openmrs.OpenmrsObject;
 import org.openmrs.module.metrics.api.exceptions.MetricsException;
 import org.openmrs.module.metrics.api.model.GeneralConfiguration;
 import org.openmrs.util.OpenmrsClassLoader;
@@ -40,6 +41,18 @@ public class EventsUtils {
 			}
 			return IOUtils.toString(in, "UTF-8");
 		} catch (IOException e) {
+			LOGGER.error(e.getMessage());
+			throw new MetricsException(e);
+		}
+	}
+	
+	public static Class<? extends OpenmrsObject> getOpenMrsClass(String openMrsClass) throws MetricsException {
+		Class<? extends OpenmrsObject> classToMonitor;
+		try {
+			classToMonitor = (Class<? extends OpenmrsObject>) Class.forName(openMrsClass);
+			return classToMonitor;
+		}
+		catch (ClassNotFoundException e) {
 			LOGGER.error(e.getMessage());
 			throw new MetricsException(e);
 		}
