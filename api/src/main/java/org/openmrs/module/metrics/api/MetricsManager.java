@@ -8,15 +8,12 @@ import java.util.Set;
 import java.util.UUID;
 import java.time.LocalDateTime;
 
-import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.openmrs.OpenmrsObject;
-import org.openmrs.api.context.Context;
 import org.openmrs.event.Event;
 import org.openmrs.module.DaemonToken;
 import org.openmrs.module.metrics.MetricEvent;
 import org.openmrs.module.metrics.api.db.EventAction;
-import org.openmrs.module.metrics.api.db.MetricsDAO;
 import org.openmrs.module.metrics.api.event.MetricsEventListener;
 import org.openmrs.module.metrics.api.exceptions.MetricsException;
 import org.openmrs.module.metrics.api.model.EventConfiguration;
@@ -24,7 +21,6 @@ import org.openmrs.module.metrics.api.service.MetricService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.w3c.dom.events.EventException;
 
 public class MetricsManager {
 
