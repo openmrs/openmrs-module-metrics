@@ -1,5 +1,8 @@
 package org.openmrs.module.metrics.api.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.metrics.MetricEvent;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,4 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 public interface MetricService extends OpenmrsService {
 	
 	MetricEvent saveMetricEvent(MetricEvent metricEvent);
+	
+	Integer getEncounterObjectsByGivenDateRange(LocalDateTime startRange, LocalDateTime endRange, String encounterType);
+	
+	Integer getNewPatientsObjectsByGivenDateRange(LocalDateTime startRange, LocalDateTime endRange);
 }

@@ -1,5 +1,8 @@
 package org.openmrs.module.metrics.api.impl;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.impl.BaseOpenmrsService;
@@ -25,4 +28,13 @@ public class MetricsServiceImpl extends BaseOpenmrsService implements MetricServ
 		return dao.saveMetricEvent(metricEvent);
 	}
 	
+	@Override
+	public Integer getEncounterObjectsByGivenDateRange(LocalDateTime startRange, LocalDateTime endRange, String encounterType) {
+		return dao.getEncounterObjectsByGivenDateRange(startRange, endRange, encounterType);
+	}
+	
+	@Override
+	public Integer getNewPatientsObjectsByGivenDateRange(LocalDateTime startRange, LocalDateTime endRange) {
+		return dao.getNewPatientsObjectsByGivenDateRange(startRange, endRange);
+	}
 }

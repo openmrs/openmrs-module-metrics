@@ -13,7 +13,7 @@
         <property name="uuid" type="java.lang.String" column="uuid" length="40" unique="true" not-null="true" />
         <property name="title" type="java.lang.String" column="title" length="255" not-null="true" />
         <property name="timeStamp" type="java.time.LocalDateTime" column="timestamp" not-null="true"/>
-        <property name="uri" type="java.net.URI" column="uri" length="255" not-null="false" />
+        <property name="object_uuid" type="java.net.URI" column="uri" length="255" not-null="false" />
         <property name="category" type="java.lang.String" column="category" length="255" not-null="true" />
         <property name="serializedContents" type="java.lang.String" column="object" length="1000" not-null="true" />
         <property name="tags" type="java.lang.String" column="tags" length="255" not-null="true" />
