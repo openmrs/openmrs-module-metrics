@@ -24,7 +24,6 @@ public class JmxReportBuilderImpl implements JmxReportBuilder {
 	
 	@Override
 	public MetricRegistry initializeMetricRegistry() {
-		MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
 		MetricRegistry metricRegistry = new MetricRegistry();
 		metricRegistry.register("jvm.attribute", new JvmAttributeGaugeSet());
 		metricRegistry.register("jvm.memory", new MemoryUsageGaugeSet());
