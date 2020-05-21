@@ -40,33 +40,16 @@ public class MetricHandler {
 		Integer noOfNewPatients = metricService.getNewPatientsObjectsByGivenDateRange(startRange, endRange);
 		Map<String, Integer> noOfEncounters = metricService.getEncounterObjectTypesCountByGivenDateRange(startRange,
 		    endRange);
-		
 		ObjectName objectName;
-		
-		//register custom metrics with jmx
-		MetricscConfigImpl metricConfigMBean = new MetricscConfigImpl(noOfNewPatients, noOfEncounters);
-		MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+
 		try {
-			objectName = new ObjectName("com.sysdig.app:name=SystemStatusExample");
-			//			mbs.registerMBean(metricConfigMBean, objectName);
+			objectName = new ObjectName("org.openmrs.module:metric=SystemMetrics");
 		}
 		catch (MalformedObjectNameException e) {
 			LOGGER.error(e.getMessage());
 			throw new MetricsException(e);
 		}
-		//		catch (InstanceAlreadyExistsException e) {
-		//			LOGGER.error(e.getMessage());
-		//			throw new MetricsException(e);
-		//		}
-		//		catch (NotCompliantMBeanException e) {
-		//			LOGGER.error(e.getMessage());
-		//			throw new MetricsException(e);
-		//		}
-		//		catch (MBeanRegistrationException e) {
-		//			LOGGER.error(e.getMessage());
-		//			throw new MetricsException(e);
-		//		}
-		
+
 		//jmx report builder flow
 		MetricRegistry metricRegistry = jmxReportBuilder.initializeMetricRegistry();
 		metricRegistry.register(name(MetricscConfigImpl.class, "New patients registered"), new JmxAttributeGauge(objectName,
