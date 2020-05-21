@@ -1,5 +1,7 @@
 package org.openmrs.module.metrics.util;
 
+import static com.codahale.metrics.MetricRegistry.name;
+
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.MBeanRegistrationException;
 import javax.management.MBeanServer;
@@ -12,6 +14,7 @@ import java.util.Map;
 
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.jmx.JmxReporter;
+import com.codahale.metrics.jvm.JmxAttributeGauge;
 import org.openmrs.module.metrics.api.exceptions.MetricsException;
 import org.openmrs.module.metrics.api.service.MetricService;
 import org.openmrs.module.metrics.api.utils.EventsUtils;
@@ -38,32 +41,38 @@ public class MetricHandler {
 		Map<String, Integer> noOfEncounters = metricService.getEncounterObjectTypesCountByGivenDateRange(startRange,
 		    endRange);
 		
+		ObjectName objectName;
+		
 		//register custom metrics with jmx
 		MetricscConfigImpl metricConfigMBean = new MetricscConfigImpl(noOfNewPatients, noOfEncounters);
 		MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
 		try {
-			ObjectName objectName = new ObjectName("com.sysdig.app:name=SystemStatusExample");
-			mbs.registerMBean(metricConfigMBean, objectName);
+			objectName = new ObjectName("com.sysdig.app:name=SystemStatusExample");
+			//			mbs.registerMBean(metricConfigMBean, objectName);
 		}
 		catch (MalformedObjectNameException e) {
 			LOGGER.error(e.getMessage());
 			throw new MetricsException(e);
 		}
-		catch (InstanceAlreadyExistsException e) {
-			LOGGER.error(e.getMessage());
-			throw new MetricsException(e);
-		}
-		catch (NotCompliantMBeanException e) {
-			LOGGER.error(e.getMessage());
-			throw new MetricsException(e);
-		}
-		catch (MBeanRegistrationException e) {
-			LOGGER.error(e.getMessage());
-			throw new MetricsException(e);
-		}
+		//		catch (InstanceAlreadyExistsException e) {
+		//			LOGGER.error(e.getMessage());
+		//			throw new MetricsException(e);
+		//		}
+		//		catch (NotCompliantMBeanException e) {
+		//			LOGGER.error(e.getMessage());
+		//			throw new MetricsException(e);
+		//		}
+		//		catch (MBeanRegistrationException e) {
+		//			LOGGER.error(e.getMessage());
+		//			throw new MetricsException(e);
+		//		}
 		
 		//jmx report builder flow
 		MetricRegistry metricRegistry = jmxReportBuilder.initializeMetricRegistry();
+		metricRegistry.register(name(MetricscConfigImpl.class, "New patients registered"), new JmxAttributeGauge(objectName,
+		        "nePatientsRegistered"));
+		metricRegistry.register(name(MetricscConfigImpl.class, "New Encounterby grouped by type"), new JmxAttributeGauge(
+		        objectName, "newEncounters"));
 		JmxReporter jmxReport = jmxReportBuilder.start(metricRegistry);
 	}
 }

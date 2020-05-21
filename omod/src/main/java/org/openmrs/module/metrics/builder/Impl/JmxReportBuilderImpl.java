@@ -20,11 +20,10 @@ public class JmxReportBuilderImpl implements JmxReportBuilder {
 	protected final Log log = LogFactory.getLog(this.getClass());
 	
 	@Autowired
-	private MetricService metricService;
+	private MetricRegistry metricRegistry;
 	
 	@Override
 	public MetricRegistry initializeMetricRegistry() {
-		MetricRegistry metricRegistry = new MetricRegistry();
 		metricRegistry.register("jvm.attribute", new JvmAttributeGaugeSet());
 		metricRegistry.register("jvm.memory", new MemoryUsageGaugeSet());
 		return metricRegistry;
