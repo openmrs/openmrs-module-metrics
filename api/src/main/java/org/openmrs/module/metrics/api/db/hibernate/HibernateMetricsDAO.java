@@ -47,27 +47,30 @@ public class HibernateMetricsDAO implements MetricsDAO {
 		return (Integer) sessionFactory.getCurrentSession().createSQLQuery(sql)
 		        .setDate("startRange", Date.from(startRange.atZone(ZoneId.systemDefault()).toInstant()))
 		        .setDate("endRange", Date.from(endRange.atZone(ZoneId.systemDefault()).toInstant()))
-		        .setString("encounterType", encounterType).uniqueResult();
+		        .setString("encounterType", encounterType)
+				.uniqueResult();
 	}
 	
 	@Override
 	public Integer getNewPatientsObjectsByGivenDateRange(LocalDateTime startRange, LocalDateTime endRange) {
-		String sql = "select count(*)" + "from event_records e"
-		        + "where e.title='Patient' and (e.date_created between :startRange and :endRange) and e.tags = 'CREATED'";
+		String sql = "select count(*) " +
+				"from event_records e " +
+				"where e.title='Patient' and (e.date_created between :startRange and :endRange) and e.tags = 'CREATED'";
 		
 		return (Integer) sessionFactory.getCurrentSession().createSQLQuery(sql)
 		        .setDate("startRange", Date.from(startRange.atZone(ZoneId.systemDefault()).toInstant()))
-		        .setDate("endRange", Date.from(endRange.atZone(ZoneId.systemDefault()).toInstant())).uniqueResult();
+		        .setDate("endRange", Date.from(endRange.atZone(ZoneId.systemDefault()).toInstant()))
+				.uniqueResult();
 	}
 	
 	@Override
 	public Map<String, Integer> getEncounterObjectTypesCountByGivenDateRange(LocalDateTime startRange,
 			LocalDateTime endRange) {
 		Map<String, Integer> encounterObs = new HashMap<>();
-		String sql = "select c.name , count(*)" +
+		String sql = "select c.name , count(*) " +
 				"from event_records e " +
 				"inner join encounter b on e.object_uuid = b.uuid " +
-				"inner join encounter_type c on b.encounter_type = c.encounter_type_id" +
+				"inner join encounter_type c on b.encounter_type = c.encounter_type_id " +
 				"where e.title = 'Encounter' and (e.date_created between :startRange and :endRange) and e.tags = 'CREATED'" +
 				"Group BY c.name;";
 
