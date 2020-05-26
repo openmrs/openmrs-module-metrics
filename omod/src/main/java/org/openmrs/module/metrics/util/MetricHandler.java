@@ -2,22 +2,18 @@ package org.openmrs.module.metrics.util;
 
 import static com.codahale.metrics.MetricRegistry.name;
 
-import javax.management.InstanceAlreadyExistsException;
-import javax.management.MBeanRegistrationException;
-import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
-import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
-import java.lang.management.ManagementFactory;
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Map;
 
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.jmx.JmxReporter;
 import com.codahale.metrics.jvm.JmxAttributeGauge;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.openmrs.module.metrics.api.exceptions.MetricsException;
 import org.openmrs.module.metrics.api.service.MetricService;
-import org.openmrs.module.metrics.api.utils.EventsUtils;
 import org.openmrs.module.metrics.builder.JmxReportBuilder;
 import org.openmrs.module.metrics.model.MetricscConfigImpl;
 import org.slf4j.Logger;
@@ -25,21 +21,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class MetricHandler {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(MetricHandler.class);
-	
+
 	@Autowired
-	private JmxReportBuilder jmxReportBuilder;
-	
+	private static JmxReportBuilder jmxReportBuilder;
+
 	@Autowired
-	private MetricService metricService;
-	
-	public void buildMetricFlow(LocalDateTime startRange, LocalDateTime endRange) throws MetricsException {
-		
+	private static MetricService metricService;
+
+	public static MetricRegistry buildMetricFlow(LocalDateTime startRange, LocalDateTime endRange) throws MetricsException {
+
 		//fetch custom metrics
 		Integer noOfNewPatients = metricService.getNewPatientsObjectsByGivenDateRange(startRange, endRange);
 		Map<String, Integer> noOfEncounters = metricService.getEncounterObjectTypesCountByGivenDateRange(startRange,
-		    endRange);
+				endRange);
 		ObjectName objectName;
 
 		try {
@@ -53,9 +49,13 @@ public class MetricHandler {
 		//jmx report builder flow
 		MetricRegistry metricRegistry = jmxReportBuilder.initializeMetricRegistry();
 		metricRegistry.register(name(MetricscConfigImpl.class, "New patients registered"), new JmxAttributeGauge(objectName,
-		        "nePatientsRegistered"));
-		metricRegistry.register(name(MetricscConfigImpl.class, "New Encounterby grouped by type"), new JmxAttributeGauge(
-		        objectName, "newEncounters"));
-		JmxReporter jmxReport = jmxReportBuilder.start(metricRegistry);
+				"newPatientsRegistered"));
+		metricRegistry.register(name(MetricscConfigImpl.class, "New Encounter grouped by type"), new JmxAttributeGauge(
+				objectName, "newEncounters"));
+		return metricRegistry;
+	}
+
+	public static ObjectWriter getWriter(HttpServletRequest request, ObjectMapper mapper) {
+		return mapper.writerWithDefaultPrettyPrinter();
 	}
 }
