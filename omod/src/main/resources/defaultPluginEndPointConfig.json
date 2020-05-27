@@ -1,0 +1,11 @@
+{
+  "graphite": [
+    {
+      "grpahiteHost": "127.0.0.1",
+      "graphitePort": 2003,
+      "timeForPoll": 12,
+      "enabled": false,
+      "graphitePrefix" : "web1.example.com"
+    }
+  ]
+}

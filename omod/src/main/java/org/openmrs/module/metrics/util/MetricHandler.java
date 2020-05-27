@@ -1,10 +1,12 @@
 package org.openmrs.module.metrics.util;
 
 import static com.codahale.metrics.MetricRegistry.name;
+import static org.openmrs.module.metrics.api.utils.EventsUtils.readResourceFile;
 
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -15,7 +17,8 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import org.openmrs.module.metrics.api.exceptions.MetricsException;
 import org.openmrs.module.metrics.api.service.MetricService;
 import org.openmrs.module.metrics.builder.JmxReportBuilder;
-import org.openmrs.module.metrics.model.MetricscConfigImpl;
+import org.openmrs.module.metrics.model.impl.GeneralEndPointConfig;
+import org.openmrs.module.metrics.model.impl.MetricscConfigImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,5 +64,18 @@ public class MetricHandler {
 	
 	public ObjectWriter getWriter(HttpServletRequest request) {
 		return this.objMapper.writerWithDefaultPrettyPrinter();
+	}
+	
+	public static GeneralEndPointConfig parseJsonFileToEndPointConfiguration(String resourcePath) {
+		org.codehaus.jackson.map.ObjectMapper mapper = new org.codehaus.jackson.map.ObjectMapper();
+		try {
+			GeneralEndPointConfig endPointConfig = mapper.readValue(readResourceFile(resourcePath),
+			    GeneralEndPointConfig.class);
+			return endPointConfig;
+		}
+		catch (IOException e) {
+			LOGGER.error(e.getMessage());
+			throw new MetricsException(e);
+		}
 	}
 }

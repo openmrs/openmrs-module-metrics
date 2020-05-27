@@ -50,7 +50,6 @@ public class EventConfigurationServiceImpl extends BaseOpenmrsService implements
 	}
 	
 	private void loadEventConfigurations(GeneralConfiguration generalConfiguration) {
-		HashMap<String, EventConfiguration> byCategory = new LinkedHashMap<>();
 		HashMap<String, EventConfiguration> byOpenMrsClass = new LinkedHashMap<>();
 		Set<Class<? extends OpenmrsObject>> classesToMonitor =  new HashSet<>();
 
