@@ -5,7 +5,6 @@ import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.SortedMap;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,14 +15,14 @@ import org.openmrs.module.metrics.api.exceptions.MetricsException;
 import org.openmrs.module.metrics.util.MetricHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class DefaultMetricsServlet extends HttpServlet {
+public class DefaultMetricsServlet extends MetricsServlet {
 	
 	@Autowired
 	MetricHandler metricHandler;
 	
 	public DefaultMetricsServlet() {
 	}
-
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		
