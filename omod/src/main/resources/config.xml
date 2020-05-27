@@ -49,6 +49,16 @@
 		<url-pattern>/ping</url-pattern>
 	</filter-mapping>
 
+	<servlet>
+		<servlet-name>DefaultMetricsServlet</servlet-name>
+		<servlet-class>org.openmrs.module.metrics.web.controller.DefaultMetricsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DefaultMetricsServlet</servlet-name>
+		<url-pattern>/metrics</url-pattern>
+	</servlet-mapping>
+
+
 	<!-- Internationalization -->
 	<!-- All message codes should start with @MODULE_ID@.* -->
 	<messages>

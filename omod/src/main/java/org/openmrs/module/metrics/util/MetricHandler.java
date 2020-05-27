@@ -19,25 +19,29 @@ import org.openmrs.module.metrics.model.MetricscConfigImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MetricHandler {
-
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(MetricHandler.class);
-
+	
 	@Autowired
-	private static JmxReportBuilder jmxReportBuilder;
-
+	private JmxReportBuilder jmxReportBuilder;
+	
 	@Autowired
-	private static MetricService metricService;
-
-	public static MetricRegistry buildMetricFlow(LocalDateTime startRange, LocalDateTime endRange) throws MetricsException {
-
+	private MetricService metricService;
+	
+	ObjectMapper objMapper;
+	
+	public MetricRegistry buildMetricFlow(LocalDateTime startRange, LocalDateTime endRange) throws MetricsException {
+		
 		//fetch custom metrics
 		Integer noOfNewPatients = metricService.getNewPatientsObjectsByGivenDateRange(startRange, endRange);
 		Map<String, Integer> noOfEncounters = metricService.getEncounterObjectTypesCountByGivenDateRange(startRange,
-				endRange);
+		    endRange);
 		ObjectName objectName;
-
+		
 		try {
 			objectName = new ObjectName("org.openmrs.module:metric=SystemMetrics");
 		}
@@ -45,17 +49,17 @@ public class MetricHandler {
 			LOGGER.error(e.getMessage());
 			throw new MetricsException(e);
 		}
-
+		
 		//jmx report builder flow
 		MetricRegistry metricRegistry = jmxReportBuilder.initializeMetricRegistry();
 		metricRegistry.register(name(MetricscConfigImpl.class, "New patients registered"), new JmxAttributeGauge(objectName,
-				"newPatientsRegistered"));
+		        "newPatientsRegistered"));
 		metricRegistry.register(name(MetricscConfigImpl.class, "New Encounter grouped by type"), new JmxAttributeGauge(
-				objectName, "newEncounters"));
+		        objectName, "newEncounters"));
 		return metricRegistry;
 	}
-
-	public static ObjectWriter getWriter(HttpServletRequest request, ObjectMapper mapper) {
-		return mapper.writerWithDefaultPrettyPrinter();
+	
+	public ObjectWriter getWriter(HttpServletRequest request) {
+		return this.objMapper.writerWithDefaultPrettyPrinter();
 	}
 }
