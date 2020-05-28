@@ -13,9 +13,14 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlets.MetricsServlet;
 import org.openmrs.module.metrics.api.exceptions.MetricsException;
 import org.openmrs.module.metrics.util.MetricHandler;
+import org.openmrs.module.metrics.web.filter.RedirectFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class DefaultMetricsServlet extends MetricsServlet {
+	
+	private static final Logger log = LoggerFactory.getLogger(RedirectFilter.class);
 	
 	@Autowired
 	MetricHandler metricHandler;
