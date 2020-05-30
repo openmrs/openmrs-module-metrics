@@ -22,10 +22,12 @@ public class GeneralEndPointConfig {
 	
 	@Override
 	public boolean equals(Object o) {
-		if (this == o)
+		if (this == o){
 			return true;
-		if (o == null || getClass() != o.getClass())
+		}
+		if (o == null || getClass() != o.getClass()){
 			return false;
+		}
 		org.openmrs.module.metrics.model.impl.GeneralEndPointConfig that = (org.openmrs.module.metrics.model.impl.GeneralEndPointConfig) o;
 		return Objects.equals(graphiteConfigurations, that.graphiteConfigurations);
 	}
