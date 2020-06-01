@@ -1,6 +1,8 @@
-package org.openmrs.module.metrics.model;
+package org.openmrs.module.metrics.model.impl;
 
 import java.util.Map;
+
+import org.openmrs.module.metrics.model.MetricConfigMBean;
 
 public class MetricscConfigImpl implements MetricConfigMBean {
 	
