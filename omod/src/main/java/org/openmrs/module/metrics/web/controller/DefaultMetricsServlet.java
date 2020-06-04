@@ -68,7 +68,6 @@ public class DefaultMetricsServlet extends MetricsServlet {
 			} else if ("histograms".equals(type)) {
 				metrics = metricRegistry.getHistograms();
 			} else {
-				
 				throw new MetricsException("Invalid metric type");
 			}
 			return metrics;

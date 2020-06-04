@@ -97,6 +97,11 @@
 				<artifactId>metrics-graphite</artifactId>
 				<version>${metrics.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>io.prometheus</groupId>
+				<artifactId>simpleclient_dropwizard</artifactId>
+				<version>${prometheusclient.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -221,5 +226,6 @@
 		<eventModuleVersion>2.5</eventModuleVersion>
 		<metrics.version>4.1.7</metrics.version>
 		<syncVersion>1.2</syncVersion>
+		<prometheusclient.version>0.9.0</prometheusclient.version>
 	</properties>
 </project>

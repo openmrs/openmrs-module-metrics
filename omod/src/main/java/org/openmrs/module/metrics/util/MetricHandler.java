@@ -14,6 +14,9 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.jvm.JmxAttributeGauge;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import io.prometheus.client.CollectorRegistry;
+import io.prometheus.client.dropwizard.DropwizardExports;
+import org.openmrs.module.metrics.MetricConfig;
 import org.openmrs.module.metrics.api.exceptions.MetricsException;
 import org.openmrs.module.metrics.api.service.MetricService;
 import org.openmrs.module.metrics.builder.JmxReportBuilder;
@@ -59,6 +62,14 @@ public class MetricHandler {
 		        "newPatientsRegistered"));
 		metricRegistry.register(name(MetricscConfigImpl.class, "New Encounter grouped by type"), new JmxAttributeGauge(
 		        objectName, "newEncounters"));
+
+		//Activate and export to prometheus register based on global config changes.
+		if(MetricConfig.IS_PROMETHEUS_ENABLED){
+			CollectorRegistry.defaultRegistry.register(new DropwizardExports(metricRegistry));
+		}else if(!MetricConfig.IS_PROMETHEUS_ENABLED && CollectorRegistry.defaultRegistry.metricFamilySamples() != null){
+			CollectorRegistry.defaultRegistry.unregister(new DropwizardExports(metricRegistry));
+		}
+
 		return metricRegistry;
 	}
 	
