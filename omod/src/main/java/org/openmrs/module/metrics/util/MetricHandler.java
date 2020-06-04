@@ -1,27 +1,22 @@
 package org.openmrs.module.metrics.util;
 
-import static com.codahale.metrics.MetricRegistry.name;
 import static org.openmrs.module.metrics.api.utils.EventsUtils.readResourceFile;
 
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Map;
 
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.jvm.JmxAttributeGauge;
+import java.util.Map;
+import java.util.function.Supplier;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import io.prometheus.client.CollectorRegistry;
-import io.prometheus.client.dropwizard.DropwizardExports;
-import org.openmrs.module.metrics.MetricConfig;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.jmx.JmxMeterRegistry;
 import org.openmrs.module.metrics.api.exceptions.MetricsException;
 import org.openmrs.module.metrics.api.service.MetricService;
 import org.openmrs.module.metrics.builder.JmxReportBuilder;
 import org.openmrs.module.metrics.model.impl.GeneralEndPointConfig;
-import org.openmrs.module.metrics.model.impl.MetricscConfigImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,40 +34,37 @@ public class MetricHandler {
 	private MetricService metricService;
 	
 	ObjectMapper objMapper;
-	
-	public MetricRegistry buildMetricFlow(LocalDateTime startRange, LocalDateTime endRange) throws MetricsException {
+	Integer noOfNewPatients;
+	Map<String, Integer> noOfEncounters;
+	String currentKey;
+
+	public JmxMeterRegistry buildMetricFlow(LocalDateTime startRange, LocalDateTime endRange) throws MetricsException {
 		
 		//fetch custom metrics
-		Integer noOfNewPatients = metricService.getNewPatientsObjectsByGivenDateRange(startRange, endRange);
-		Map<String, Integer> noOfEncounters = metricService.getEncounterObjectTypesCountByGivenDateRange(startRange,
+		noOfNewPatients = metricService.getNewPatientsObjectsByGivenDateRange(startRange, endRange);
+		noOfEncounters = metricService.getEncounterObjectTypesCountByGivenDateRange(startRange,
 		    endRange);
-		ObjectName objectName;
-		
-		try {
-			objectName = new ObjectName("org.openmrs.module:metric=SystemMetrics");
-		}
-		catch (MalformedObjectNameException e) {
-			LOGGER.error(e.getMessage());
-			throw new MetricsException(e);
-		}
-		
+
 		//jmx report builder flow
-		MetricRegistry metricRegistry = jmxReportBuilder.initializeMetricRegistry();
-		metricRegistry.register(name(MetricscConfigImpl.class, "New patients registered"), new JmxAttributeGauge(objectName,
-		        "newPatientsRegistered"));
-		metricRegistry.register(name(MetricscConfigImpl.class, "New Encounter grouped by type"), new JmxAttributeGauge(
-		        objectName, "newEncounters"));
+		JmxMeterRegistry meterRegistry = jmxReportBuilder.initializeJMXMetricRegistry();
 
-		//Activate and export to prometheus register based on global config changes.
-		if(MetricConfig.IS_PROMETHEUS_ENABLED){
-			CollectorRegistry.defaultRegistry.register(new DropwizardExports(metricRegistry));
-		}else if(!MetricConfig.IS_PROMETHEUS_ENABLED && CollectorRegistry.defaultRegistry.metricFamilySamples() != null){
-			CollectorRegistry.defaultRegistry.unregister(new DropwizardExports(metricRegistry));
-		}
+		//register encounter types in metric registry
+		noOfEncounters.forEach((key, tab) -> {
+			currentKey = key;
+			Gauge.builder("statistic.enocuntersbytype" ,getEncounnter::get)
+					.tag("type", key)
+					.description("The number of new encounters registerd from encounter type" + key)
+					.register(meterRegistry);
+		});
 
-		return metricRegistry;
+		Gauge.builder("statistic.patientcount", getNewPatients::get)
+				.tag("type", "Patient type")
+				.description("Number of unserved orders")
+				.register(meterRegistry);
+
+		return meterRegistry;
 	}
-	
+
 	public ObjectWriter getWriter(HttpServletRequest request) {
 		return this.objMapper.writerWithDefaultPrettyPrinter();
 	}
@@ -89,4 +81,17 @@ public class MetricHandler {
 			throw new MetricsException(e);
 		}
 	}
+
+	Supplier<Number> getEncounnter=()->{
+		if(noOfEncounters != null) {
+			return noOfEncounters.get(currentKey);
+		}else
+		{
+			return 0.0;
+		}
+	};
+
+	Supplier<Number> getNewPatients=()->{
+		return noOfNewPatients;
+	};
 }
