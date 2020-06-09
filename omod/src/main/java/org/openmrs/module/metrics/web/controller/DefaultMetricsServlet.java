@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.codahale.metrics.Metric;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlets.MetricsServlet;
+import io.micrometer.jmx.JmxMeterRegistry;
 import org.openmrs.module.metrics.api.exceptions.MetricsException;
 import org.openmrs.module.metrics.util.MetricHandler;
 import org.openmrs.module.metrics.web.filter.RedirectFilter;
@@ -33,20 +34,20 @@ public class DefaultMetricsServlet extends MetricsServlet {
 		
 		LocalDateTime startDatetime;
 		LocalDateTime endDatetime;
-		MetricRegistry metricRegistry;
+		JmxMeterRegistry meterRegistry;
 		final String CONTENT_TYPE = "application/json";
 		
 		if (req.getParameter("startDateTime") != null && req.getParameter("endDateTime") != null) {
 			startDatetime = LocalDateTime.parse(req.getParameter("startDateTime"));
 			endDatetime = LocalDateTime.parse(req.getParameter("endDatetime"));
-			metricRegistry = this.metricHandler.buildMetricFlow(startDatetime, endDatetime);
+			meterRegistry = this.metricHandler.buildMetricFlow(startDatetime, endDatetime);
 			
 			resp.setContentType(CONTENT_TYPE);
 			resp.setStatus(HttpServletResponse.SC_OK);
 			final OutputStream output = resp.getOutputStream();
 			
 			try {
-				Object outputValue = filter(metricRegistry, req.getParameter("type"));
+				Object outputValue = filter(meterRegistry, req.getParameter("type"));
 				this.metricHandler.getWriter(req).writeValue(output, outputValue);
 			}
 			catch (IOException e) {
@@ -58,21 +59,20 @@ public class DefaultMetricsServlet extends MetricsServlet {
 		}
 	}
 	
-	private Object filter(MetricRegistry metricRegistry, String type) throws MetricsException {
+	private Object filter(JmxMeterRegistry meterRegistry, String type) throws MetricsException {
 		boolean filterByType = type != null && !type.isEmpty();
 		
 		if (filterByType) {
 			SortedMap<String, ? extends Metric> metrics;
 			if ("gauges".equals(type)) {
-				metrics = metricRegistry.getGauges();
+				metrics = meterRegistry.getDropwizardRegistry().getGauges();
 			} else if ("histograms".equals(type)) {
-				metrics = metricRegistry.getHistograms();
+				metrics = meterRegistry.getDropwizardRegistry().getHistograms();
 			} else {
-				
 				throw new MetricsException("Invalid metric type");
 			}
 			return metrics;
 		}
-		return metricRegistry;
+		return meterRegistry;
 	}
 }
