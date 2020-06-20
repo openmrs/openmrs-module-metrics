@@ -21,30 +21,36 @@ import org.openmrs.module.metrics.api.service.MetricService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MetricsManager {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MetricsManager.class);
 
-	private DaemonToken token;
+	private DaemonToken daemonToken;
 
 	private static final String UUID_PATTERN = "{uuid}";
 
 	@Autowired
 	private MetricService metricService;
 	
-	public MetricsManager(DaemonToken token) {
-		this.token = token;
-	}
-	
 	private Set<Class<? extends OpenmrsObject>> classesToMonitor = new HashSet<>();
 	
 	private final MetricsEventListener eventListener = new MetricsEventListener();
 	
 	private boolean hasStarted = false;
+
+	public void setDaemonToken(DaemonToken daemonToken) {
+		this.daemonToken = daemonToken;
+	}
 	
 	public void start() {
-		eventListener.setToken(token);
+		if (daemonToken == null) {
+			throw new IllegalStateException("Cannot start MetricsManager without a valid DaemonToken");
+		}
+
+		eventListener.setToken(daemonToken);
 		
 		for (Class<? extends OpenmrsObject> classToMonitor : classesToMonitor) {
 			Event.subscribe(classToMonitor, null, eventListener);

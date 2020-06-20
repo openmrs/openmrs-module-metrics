@@ -8,7 +8,7 @@
       "category": "person",
       "linkTemplates": {
         "rest": "/ws/rest/v1/person/{uuid}?v=full",
-        "fhir": "/ws/fhir/Person/{uuid}"
+        "fhir": "/ws/fhir2/R4/Person/{uuid}"
       }
     },
     {
@@ -27,7 +27,7 @@
       "category": "patient",
       "linkTemplates": {
         "rest": "/ws/rest/v1/patient/{uuid}?v=full",
-        "fhir": "/ws/fhir/Patient/{uuid}"
+        "fhir": "/ws/fhir2/R4/Patient/{uuid}"
       }
     },
     {
@@ -46,7 +46,7 @@
       "category": "observation",
       "linkTemplates": {
         "rest": "/ws/rest/v1/obs/{uuid}?v=full",
-        "fhir": "/ws/fhir/Observation/{uuid}"
+        "fhir": "/ws/fhir2/R4/Observation/{uuid}"
       }
     },
     {
@@ -56,7 +56,7 @@
       "category": "encounter",
       "linkTemplates": {
         "rest": "/ws/rest/v1/encounter/{uuid}?v=full",
-        "fhir": "/ws/fhir/Encounter/{uuid}"
+        "fhir": "/ws/fhir2/R4/Encounter/{uuid}"
       }
     }
   ]

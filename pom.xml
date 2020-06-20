@@ -32,35 +32,35 @@
 			<dependency>
 				<groupId>org.openmrs.api</groupId>
 				<artifactId>openmrs-api</artifactId>
-				<version>${openMRSVersion}</version>
+				<version>${openmrsPlatformVersion}</version>
 				<type>jar</type>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.openmrs.api</groupId>
 				<artifactId>openmrs-api</artifactId>
-				<version>${openMRSVersion}</version>
+				<version>${openmrsPlatformVersion}</version>
 				<type>test-jar</type>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.openmrs.web</groupId>
 				<artifactId>openmrs-web</artifactId>
-				<version>${openMRSVersion}</version>
+				<version>${openmrsPlatformVersion}</version>
 				<type>jar</type>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.openmrs.web</groupId>
 				<artifactId>openmrs-web</artifactId>
-				<version>${openMRSVersion}</version>
+				<version>${openmrsPlatformVersion}</version>
 				<type>test-jar</type>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.openmrs.test</groupId>
 				<artifactId>openmrs-test</artifactId>
-				<version>${openMRSVersion}</version>
+				<version>${openmrsPlatformVersion}</version>
 				<type>pom</type>
 				<scope>test</scope>
 			</dependency>
@@ -71,31 +71,52 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>sync-api</artifactId>
-				<version>${syncVersion}</version>
-				<type>jar</type>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
 				<groupId>io.dropwizard.metrics</groupId>
 				<artifactId>metrics-core</artifactId>
 				<version>${metrics.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>io.dropwizard.metrics</groupId>
 				<artifactId>metrics-jmx</artifactId>
 				<version>${metrics.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>io.dropwizard.metrics</groupId>
 				<artifactId>metrics-servlets</artifactId>
 				<version>${metrics.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.fasterxml.jackson.core</groupId>
+						<artifactId>jackson-databind</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>io.dropwizard.metrics</groupId>
 				<artifactId>metrics-graphite</artifactId>
 				<version>${metrics.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>io.prometheus</groupId>
@@ -237,11 +258,9 @@
     <properties>
 		<javaVersion>1.8</javaVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<openMRSVersion>1.10.2</openMRSVersion>
 		<openmrsPlatformVersion>2.1.4</openmrsPlatformVersion>
 		<eventModuleVersion>2.5</eventModuleVersion>
 		<metrics.version>4.1.7</metrics.version>
-		<syncVersion>1.2</syncVersion>
 		<prometheusclient.version>0.9.0</prometheusclient.version>
 		<micrometer.version>1.5.1</micrometer.version>
 	</properties>

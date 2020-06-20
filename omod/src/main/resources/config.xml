@@ -20,12 +20,13 @@
 	<require_version>${openMRSVersion}</require_version>
 
 	<require_modules>
-		<require_module version="${eventModuleVersion}">org.openmrs.event</require_module>
+		<require_module>org.openmrs.event</require_module>
 	</require_modules>
 	
 	<!-- Extensions -->
 	<aware_of_modules>
 		<aware_of_module>org.openmrs.module.legacyui</aware_of_module>
+		<aware_of_module>org.openmrs.module.fhir2</aware_of_module>
 	</aware_of_modules>
 
 	<servlet>
@@ -52,7 +53,7 @@
 	<!--Servlet to expose metrics-->
 	<servlet>
 		<servlet-name>DefaultMetricsServlet</servlet-name>
-		<servlet-class>org.openmrs.module.metrics.web.controller.DefaultMetricsServlet</servlet-class>
+		<servlet-class>org.openmrs.module.metrics.web.DefaultMetricsServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>DefaultMetricsServlet</servlet-name>

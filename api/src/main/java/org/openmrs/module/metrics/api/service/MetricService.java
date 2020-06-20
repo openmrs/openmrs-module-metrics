@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Service interface for Metric Service API functionality
  */
-@Transactional
 public interface MetricService extends OpenmrsService {
 	
 	MetricEvent saveMetricEvent(MetricEvent metricEvent);

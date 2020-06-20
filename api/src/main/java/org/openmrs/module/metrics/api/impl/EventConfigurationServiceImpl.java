@@ -4,28 +4,20 @@ import static org.openmrs.module.metrics.MetricsConstants.EVENTS_PATH_TO_DEFAULT
 import static org.openmrs.module.metrics.api.utils.EventsUtils.getOpenMrsClass;
 import static org.openmrs.module.metrics.api.utils.EventsUtils.parseJsonFileToEventConfiguration;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Set;
 
 import org.openmrs.OpenmrsObject;
-import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.metrics.api.model.EventConfiguration;
 import org.openmrs.module.metrics.api.model.GeneralConfiguration;
 import org.openmrs.module.metrics.api.service.EventConfigurationService;
 import org.openmrs.module.metrics.api.utils.EventsUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-public class EventConfigurationServiceImpl extends BaseOpenmrsService implements EventConfigurationService {
-	
-	private List<String> feedFilters;
+@Component
+public class EventConfigurationServiceImpl implements EventConfigurationService {
 	
 	private HashMap<String, EventConfiguration> eventConfigurationByOpenMrsClass;
 	
@@ -57,8 +49,8 @@ public class EventConfigurationServiceImpl extends BaseOpenmrsService implements
 			byOpenMrsClass.put(configuration.getOpenMrsClass(), configuration);
 			classesToMonitor.add(getOpenMrsClass(configuration.getOpenMrsClass()));
 		}
+
 		eventConfigurationByOpenMrsClass = byOpenMrsClass;
-		feedFilters = generalConfiguration.getEventFilterBeans();
 		openMrsClassesToMonitor = classesToMonitor;
 	}
 }
