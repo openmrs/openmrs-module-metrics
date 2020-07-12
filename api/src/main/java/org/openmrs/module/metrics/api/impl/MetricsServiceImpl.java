@@ -11,19 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
 @Transactional
 public class MetricsServiceImpl extends BaseOpenmrsService implements MetricService {
 	
 	private MetricsDAO dao;
-	
-	/**
-	 * @param dao the dao to set
-	 */
-	@Autowired
-	public void setDao(MetricsDAO dao) {
-		this.dao = dao;
-	}
 	
 	@Override
 	public MetricEvent saveMetricEvent(MetricEvent metricEvent) {
@@ -46,5 +37,12 @@ public class MetricsServiceImpl extends BaseOpenmrsService implements MetricServ
 	@Transactional(readOnly = true)
 	public Map<String, Integer> getEncounterObjectTypesCountByGivenDateRange(LocalDateTime startRange, LocalDateTime endRange) {
 		return dao.getEncounterObjectTypesCountByGivenDateRange(startRange, endRange);
+	}
+
+	/**
+	 * @param metricDAO the dao to set
+	 */
+	public void setMetricsDAO(MetricsDAO metricDAO) {
+		this.dao = metricDAO;
 	}
 }

@@ -6,6 +6,8 @@ import org.openmrs.module.metrics.MetricEvent;
 
 public interface MetricsDAO {
 	
+	MetricEvent getMetricEventByUuid(String uuid);
+	
 	MetricEvent saveMetricEvent(MetricEvent metricEvent);
 	
 	Integer getEncounterObjectsByGivenDateRangeAndType(LocalDateTime startRange, LocalDateTime endRange, String encounterType);

@@ -7,13 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.openmrs.api.db.hibernate.DbSessionFactory;
 import org.openmrs.module.metrics.MetricEvent;
 import org.openmrs.module.metrics.api.db.MetricsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
 public class HibernateMetricsDAO implements MetricsDAO {
 	
 	private DbSessionFactory sessionFactory;
@@ -21,9 +22,15 @@ public class HibernateMetricsDAO implements MetricsDAO {
 	/**
 	 * @param sessionFactory the sessionFactory to set
 	 */
-	@Autowired
 	public void setSessionFactory(DbSessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
+	}
+	
+	@Override
+	public MetricEvent getMetricEventByUuid(String uuid) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(MetricEvent.class);
+		criteria.add(Restrictions.eq("uuid", uuid));
+		return (MetricEvent) criteria.uniqueResult();
 	}
 	
 	@Override

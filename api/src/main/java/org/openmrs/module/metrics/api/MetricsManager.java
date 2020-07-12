@@ -87,32 +87,6 @@ public class MetricsManager {
 		}
 	}
 
-	public void buildEventObject(OpenmrsObject openmrsObject, EventAction eventAction, EventConfiguration eventConfiguration){
-		if (!eventConfiguration.isEnabled()) {
-			LOGGER.debug("Skipped writing '{}' Event to the database because "
-							+ "the synchronization for this object is disabled in the configuration",
-					openmrsObject.getClass().getName());
-			return;
-		}
-
-		StringBuilder tags = new StringBuilder(eventAction.name());
-
-		final MetricEvent event = new MetricEvent(
-				UUID.randomUUID().toString(),
-				eventConfiguration.getTitle(),
-				LocalDateTime.now(),
-				null,
-				getEventContent(openmrsObject, eventConfiguration),
-				eventConfiguration.getCategory(),
-				tags.toString(),
-				LocalDateTime.now() //for now added current time stamp have to debug and see how the event object looks alike
-		);
-
-		metricService.saveMetricEvent(event);
-
-		LOGGER.info("An event from class {} has been saved in Events DB", openmrsObject.getClass().getName());
-	}
-
 	private String getEventContent(OpenmrsObject openmrsObject, EventConfiguration eventConfiguration) {
 
 		String uuid = openmrsObject.getUuid();
