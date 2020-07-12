@@ -1,38 +1,59 @@
 package org.openmrs.module.metrics;
 
-import java.io.Serializable;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.LocalDateTime;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+import java.util.Date;
 
-import org.openmrs.BaseOpenmrsObject;
+import org.openmrs.BaseOpenmrsData;
 
-public class MetricEvent extends BaseOpenmrsObject implements Serializable {
+@Entity(name = "metric.Event")
+@Table(name = "metric_event_records")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class MetricEvent extends BaseOpenmrsData {
 	
-	private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "metric_event_id")
+	private Integer id;
 	
+	@Basic
+	@Column(name = "title")
 	private String title;
 	
-	private LocalDateTime timeStamp;
+	@Basic
+	@Column(name = "time_stamp")
+	private Date timeStamp;
 	
+	@Basic
+	@Column(name = "object_uuid")
 	private String objectUuid;
 	
+	@Basic
+	@Column(name = "object")
 	private String serializedContents;
 	
+	@Basic
+	@Column(name = "category")
 	private String category;
 	
+	@Basic
+	@Column(name = "tags")
 	private String tags;
 	
-	private LocalDateTime dateCreated;
-	
-	public MetricEvent(String title, LocalDateTime timeStamp, String object_uuid, String serializedContents,
-	    String category, String tags, LocalDateTime dateCreated) {
+	public MetricEvent(String title, Date timeStamp, String object_uuid, String serializedContents, String category,
+	    String tags) {
 		this.timeStamp = timeStamp;
 		this.objectUuid = object_uuid;
 		this.serializedContents = serializedContents;
 		this.title = title;
 		this.category = category;
-		this.dateCreated = dateCreated;
 		this.tags = tags;
 	}
 	
@@ -46,7 +67,7 @@ public class MetricEvent extends BaseOpenmrsObject implements Serializable {
 		this.id = id;
 	}
 	
-	public LocalDateTime getTimeStamp() {
+	public Date getTimeStamp() {
 		return timeStamp;
 	}
 	
@@ -69,9 +90,4 @@ public class MetricEvent extends BaseOpenmrsObject implements Serializable {
 	public String getTags() {
 		return tags;
 	}
-	
-	public LocalDateTime getDateCreated() {
-		return dateCreated;
-	}
-	
 }
