@@ -1,4 +1,4 @@
-package org.openmrs.module.metrics;
+package org.openmrs.module.metrics.util;
 
 import java.time.Duration;
 

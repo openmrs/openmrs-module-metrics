@@ -57,17 +57,17 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>DefaultMetricsServlet</servlet-name>
-		<url-pattern>/metrics</url-pattern>
+		<url-pattern>/anedooo</url-pattern>
 	</servlet-mapping>
 
 	<!--Listen to global preoperty change-->
-	<bean parent="openmrsEventListeners">
-		<property name="globalPropertyListeners">
-			<list merge="true">
-				<ref bean="GraphiteReporterPlugin" />
-			</list>
-		</property>
-	</bean>
+	<!--<bean parent="openmrsEventListeners">-->
+		<!--<property name="globalPropertyListeners">-->
+			<!--<list merge="true">-->
+				<!--<ref bean="GraphiteReporterPlugin" />-->
+			<!--</list>-->
+		<!--</property>-->
+	<!--</bean>-->
 
 	<!-- Internationalization -->
 	<!-- All message codes should start with @MODULE_ID@.* -->

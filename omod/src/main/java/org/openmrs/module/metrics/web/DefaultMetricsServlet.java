@@ -7,36 +7,20 @@ import java.util.SortedMap;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.codahale.metrics.Metric;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.servlets.MetricsServlet;
 import io.micrometer.jmx.JmxMeterRegistry;
 import org.openmrs.module.metrics.api.exceptions.MetricsException;
 import org.openmrs.module.metrics.util.MetricHandler;
-import org.openmrs.module.metrics.web.filter.RedirectFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-@Component
-public class DefaultMetricsServlet extends MetricsServlet {
-
-	@Autowired
+public class DefaultMetricsServlet extends HttpServlet {
+	
 	MetricHandler metricHandler;
-
-	@Override
-	public void init(ServletConfig config) throws ServletException {
-		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
-
-		super.init(config);
-	}
-
-	@Override
+	
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
 		LocalDateTime startDatetime;
 		LocalDateTime endDatetime;
@@ -46,27 +30,27 @@ public class DefaultMetricsServlet extends MetricsServlet {
 		if (req.getParameter("startDateTime") != null && req.getParameter("endDateTime") != null) {
 			startDatetime = LocalDateTime.parse(req.getParameter("startDateTime"));
 			endDatetime = LocalDateTime.parse(req.getParameter("endDatetime"));
-			meterRegistry = this.metricHandler.buildMetricFlow(startDatetime, endDatetime);
+			meterRegistry = metricHandler.buildMetricFlow(startDatetime, endDatetime);
 
 			resp.setContentType(CONTENT_TYPE);
 			resp.setStatus(HttpServletResponse.SC_OK);
 
 			try (OutputStream output = resp.getOutputStream()) {
 				Object outputValue = filter(meterRegistry, req.getParameter("type"));
-				this.metricHandler.getWriter(req).writeValue(output, outputValue);
+				metricHandler.getWriter(req).writeValue(output, outputValue);
 			}
 			catch (IOException e) {
 				throw new MetricsException(e);
 			}
 		}
 	}
-
+	
 	private Object filter(JmxMeterRegistry meterRegistry, String type) throws MetricsException {
 		boolean filterByType = type != null && !type.isEmpty();
-
+		
 		if (filterByType) {
 			SortedMap<String, ? extends Metric> metrics;
-
+			
 			switch (type) {
 				case "gauges":
 					metrics = meterRegistry.getDropwizardRegistry().getGauges();
@@ -77,10 +61,14 @@ public class DefaultMetricsServlet extends MetricsServlet {
 				default:
 					throw new MetricsException("Invalid metric type: " + type);
 			}
-
+			
 			return metrics;
 		}
-
+		
 		return meterRegistry;
+	}
+	
+	public void setMetricHandler(MetricHandler metricHandler) {
+		this.metricHandler = metricHandler;
 	}
 }

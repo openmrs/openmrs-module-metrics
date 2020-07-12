@@ -14,14 +14,14 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.jmx.JmxMeterRegistry;
 import org.openmrs.module.metrics.api.exceptions.MetricsException;
+import org.openmrs.module.metrics.api.impl.MetricsServiceImpl;
 import org.openmrs.module.metrics.api.service.MetricService;
-import org.openmrs.module.metrics.model.impl.GeneralEndPointConfig;
+//import org.openmrs.module.metrics.model.impl.GeneralEndPointConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
 public class MetricHandler {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MetricHandler.class);
@@ -46,24 +46,22 @@ public class MetricHandler {
 		return noOfNewPatients;
 	};
 
-	@Autowired
-	private JmxMeterRegistry jmxMeterRegistry;
+	private MetricsSpringWebConfiguration metricsSpringWebConfiguration;
 
-	@Autowired
 	private MetricService metricService;
 
-	public static GeneralEndPointConfig parseJsonFileToEndPointConfiguration(String resourcePath) {
-		org.codehaus.jackson.map.ObjectMapper mapper = new org.codehaus.jackson.map.ObjectMapper();
-		try {
-			GeneralEndPointConfig endPointConfig = mapper.readValue(readResourceFile(resourcePath),
-					GeneralEndPointConfig.class);
-			return endPointConfig;
-		}
-		catch (IOException e) {
-			LOGGER.error(e.getMessage());
-			throw new MetricsException(e);
-		}
-	}
+//	public static GeneralEndPointConfig parseJsonFileToEndPointConfiguration(String resourcePath) {
+//		org.codehaus.jackson.map.ObjectMapper mapper = new org.codehaus.jackson.map.ObjectMapper();
+//		try {
+//			GeneralEndPointConfig endPointConfig = mapper.readValue(readResourceFile(resourcePath),
+//					GeneralEndPointConfig.class);
+//			return endPointConfig;
+//		}
+//		catch (IOException e) {
+//			LOGGER.error(e.getMessage());
+//			throw new MetricsException(e);
+//		}
+//	}
 
 	public JmxMeterRegistry buildMetricFlow(LocalDateTime startRange, LocalDateTime endRange) throws MetricsException {
 
@@ -71,6 +69,8 @@ public class MetricHandler {
 		noOfNewPatients = metricService.getNewPatientsObjectsByGivenDateRange(startRange, endRange);
 		noOfEncounters = metricService.getEncounterObjectTypesCountByGivenDateRange(startRange,
 				endRange);
+
+		JmxMeterRegistry jmxMeterRegistry = metricsSpringWebConfiguration.jmxMeterRegistry();
 
 		//register encounter types in metric registry
 		noOfEncounters.forEach((key, tab) -> {
@@ -91,5 +91,13 @@ public class MetricHandler {
 
 	public ObjectWriter getWriter(HttpServletRequest request) {
 		return this.objMapper.writerWithDefaultPrettyPrinter();
+	}
+
+	public void setMetricService(MetricService metricService) {
+		this.metricService = metricService;
+	}
+
+	public void setMetricsSpringWebConfiguration(MetricsSpringWebConfiguration metricsSpringWebConfiguration) {
+		this.metricsSpringWebConfiguration = metricsSpringWebConfiguration;
 	}
 }
