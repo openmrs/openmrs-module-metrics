@@ -11,8 +11,6 @@ public class MetricEvent extends BaseOpenmrsObject implements Serializable {
 	
 	private int id;
 	
-	private String uuid;
-	
 	private String title;
 	
 	private LocalDateTime timeStamp;
@@ -27,9 +25,8 @@ public class MetricEvent extends BaseOpenmrsObject implements Serializable {
 	
 	private LocalDateTime dateCreated;
 	
-	public MetricEvent(String uuid, String title, LocalDateTime timeStamp, String object_uuid, String serializedContents,
+	public MetricEvent(String title, LocalDateTime timeStamp, String object_uuid, String serializedContents,
 	    String category, String tags, LocalDateTime dateCreated) {
-		this.uuid = uuid;
 		this.timeStamp = timeStamp;
 		this.objectUuid = object_uuid;
 		this.serializedContents = serializedContents;
@@ -47,10 +44,6 @@ public class MetricEvent extends BaseOpenmrsObject implements Serializable {
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
-	}
-	
-	public String getUuid() {
-		return uuid;
 	}
 	
 	public LocalDateTime getTimeStamp() {

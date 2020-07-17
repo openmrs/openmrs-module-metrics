@@ -25,17 +25,17 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 @Component
 public class DefaultMetricsServlet extends MetricsServlet {
-
+	
 	@Autowired
 	MetricHandler metricHandler;
-
+	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
-
+		
 		super.init(config);
 	}
-
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
 		LocalDateTime startDatetime;
@@ -60,13 +60,13 @@ public class DefaultMetricsServlet extends MetricsServlet {
 			}
 		}
 	}
-
+	
 	private Object filter(JmxMeterRegistry meterRegistry, String type) throws MetricsException {
 		boolean filterByType = type != null && !type.isEmpty();
-
+		
 		if (filterByType) {
 			SortedMap<String, ? extends Metric> metrics;
-
+			
 			switch (type) {
 				case "gauges":
 					metrics = meterRegistry.getDropwizardRegistry().getGauges();
@@ -77,10 +77,10 @@ public class DefaultMetricsServlet extends MetricsServlet {
 				default:
 					throw new MetricsException("Invalid metric type: " + type);
 			}
-
+			
 			return metrics;
 		}
-
+		
 		return meterRegistry;
 	}
 }

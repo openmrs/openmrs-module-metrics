@@ -95,16 +95,13 @@ public class MetricsManager {
 			return;
 		}
 
-		StringBuilder tags = new StringBuilder(eventAction.name());
-
 		final MetricEvent event = new MetricEvent(
-				UUID.randomUUID().toString(),
 				eventConfiguration.getTitle(),
 				LocalDateTime.now(),
 				null,
 				getEventContent(openmrsObject, eventConfiguration),
 				eventConfiguration.getCategory(),
-				tags.toString(),
+				eventAction.name(),
 				LocalDateTime.now() //for now added current time stamp have to debug and see how the event object looks alike
 		);
 
