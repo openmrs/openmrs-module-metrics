@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.Clock;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +20,6 @@ import org.openmrs.module.metrics.api.model.GeneralConfiguration;
 import org.openmrs.util.OpenmrsClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 public class EventsUtils {
 	
@@ -79,10 +79,8 @@ public class EventsUtils {
 			return null;
 		}
 		
-		StringBuilder tags = new StringBuilder(eventAction.name());
-		
-		final MetricEvent event = new MetricEvent(eventConfiguration.getTitle(), now(), null, getEventContent(simpleName,
-		    uuid, eventConfiguration), eventConfiguration.getCategory(), tags.toString()//for now added current time stamp have to debug and see how the event object looks alike
+		final MetricEvent event = new MetricEvent(eventConfiguration.getTitle(), LocalDateTime.now(), null, getEventContent(
+		    simpleName, uuid, eventConfiguration), eventConfiguration.getCategory(), eventAction.name(), LocalDateTime.now()//for now added current time stamp have to debug and see how the event object looks alike
 		);
 		
 		return event;
