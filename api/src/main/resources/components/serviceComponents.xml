@@ -1,0 +1,17 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+<!-- Wraps InsuranceClaimService methods in DB transactions and OpenMRS interceptors,
+         which set audit info like dateCreated, changedBy, etc.-->
+
+    <bean id="metrics.MetricService"
+          class="org.openmrs.module.metrics.api.impl.MetricsServiceImpl">
+        <property name="metricsDAO" ref="metrics.MetricsDAO"/>
+    </bean>
+
+    <bean id="metrics.EventConfigurationService"
+          class="org.openmrs.module.metrics.api.impl.EventConfigurationServiceImpl">
+    </bean>
+
+</beans>
