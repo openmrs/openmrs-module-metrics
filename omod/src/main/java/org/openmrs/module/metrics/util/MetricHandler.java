@@ -4,8 +4,8 @@ import static org.openmrs.module.metrics.api.utils.EventsUtils.readResourceFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.time.LocalDateTime;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -65,7 +65,7 @@ public class MetricHandler {
 		}
 	}
 
-	public JmxMeterRegistry buildMetricFlow(LocalDateTime startRange, LocalDateTime endRange) throws MetricsException {
+	public JmxMeterRegistry buildMetricFlow(Date startRange, Date endRange) throws MetricsException {
 
 		//fetch custom metrics
 		noOfNewPatients = metricService.getNewPatientsObjectsByGivenDateRange(startRange, endRange);
