@@ -80,8 +80,7 @@ public class EventsUtils {
 		
 		// FIXME: for now added current time stamp have to debug and see how the event object looks alike
 		final MetricEvent event = new MetricEvent(eventConfiguration.getTitle(), now(), null, getEventContent(simpleName,
-		    uuid, eventConfiguration), eventConfiguration.getCategory(), eventAction.name()
-		);
+		    uuid, eventConfiguration), eventConfiguration.getCategory(), eventAction.name());
 		
 		return event;
 	}

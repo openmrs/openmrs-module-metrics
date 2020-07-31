@@ -1,6 +1,6 @@
 package org.openmrs.module.metrics.api.impl;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Map;
 
 import org.openmrs.api.impl.BaseOpenmrsService;
@@ -32,19 +32,19 @@ public class MetricsServiceImpl extends BaseOpenmrsService implements MetricServ
 	
 	@Override
 	@Transactional(readOnly = true)
-	public Integer getEncounterObjectsByGivenDateRange(LocalDateTime startRange, LocalDateTime endRange, String encounterType) {
+	public Integer getEncounterObjectsByGivenDateRange(Date startRange, Date endRange, String encounterType) {
 		return dao.getEncounterObjectsByGivenDateRangeAndType(startRange, endRange, encounterType);
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
-	public Integer getNewPatientsObjectsByGivenDateRange(LocalDateTime startRange, LocalDateTime endRange) {
+	public Integer getNewPatientsObjectsByGivenDateRange(Date startRange, Date endRange) {
 		return dao.getNewPatientsObjectsByGivenDateRange(startRange, endRange);
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
-	public Map<String, Integer> getEncounterObjectTypesCountByGivenDateRange(LocalDateTime startRange, LocalDateTime endRange) {
+	public Map<String, Integer> getEncounterObjectTypesCountByGivenDateRange(Date startRange, Date endRange) {
 		return dao.getEncounterObjectTypesCountByGivenDateRange(startRange, endRange);
 	}
 }

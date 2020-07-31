@@ -2,7 +2,9 @@ package org.openmrs.module.metrics.web;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.time.LocalDateTime;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.SortedMap;
 
 import javax.servlet.ServletConfig;
@@ -38,16 +40,23 @@ public class DefaultMetricsServlet extends MetricsServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
-		LocalDateTime startDatetime;
-		LocalDateTime endDatetime;
+		Date startDatetime = new Date();
+		Date endDatetime = new Date();
 		JmxMeterRegistry meterRegistry;
 		final String CONTENT_TYPE = "application/json";
 
 		if (req.getParameter("startDateTime") != null && req.getParameter("endDateTime") != null) {
-			startDatetime = LocalDateTime.parse(req.getParameter("startDateTime"));
-			endDatetime = LocalDateTime.parse(req.getParameter("endDatetime"));
-			meterRegistry = this.metricHandler.buildMetricFlow(startDatetime, endDatetime);
 
+			try {
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+				startDatetime = simpleDateFormat.parse(req.getParameter("startDateTime"));
+				endDatetime =  simpleDateFormat.parse(req.getParameter("endDateTime"));
+			}
+			catch (ParseException e) {
+				throw new MetricsException(e);
+			}
+
+			meterRegistry = this.metricHandler.buildMetricFlow(startDatetime, endDatetime);
 			resp.setContentType(CONTENT_TYPE);
 			resp.setStatus(HttpServletResponse.SC_OK);
 

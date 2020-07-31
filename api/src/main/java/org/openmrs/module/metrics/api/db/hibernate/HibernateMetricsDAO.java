@@ -1,7 +1,6 @@
 package org.openmrs.module.metrics.api.db.hibernate;
 
 import java.math.BigInteger;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +12,6 @@ import org.openmrs.api.db.hibernate.DbSessionFactory;
 import org.openmrs.module.metrics.MetricEvent;
 import org.openmrs.module.metrics.api.db.MetricsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 public class HibernateMetricsDAO implements MetricsDAO {
 	
@@ -41,8 +39,7 @@ public class HibernateMetricsDAO implements MetricsDAO {
 	}
 	
 	@Override
-	public Integer getEncounterObjectsByGivenDateRangeAndType(LocalDateTime startRange, LocalDateTime endRange,
-	        String encounterType) {
+	public Integer getEncounterObjectsByGivenDateRangeAndType(Date startRange, Date endRange, String encounterType) {
 		// @formatter:off
 		String sql = "select count(*) "
 		        + "from metric_event_records e "
@@ -57,7 +54,7 @@ public class HibernateMetricsDAO implements MetricsDAO {
 	}
 	
 	@Override
-	public Integer getNewPatientsObjectsByGivenDateRange(LocalDateTime startRange, LocalDateTime endRange) {
+	public Integer getNewPatientsObjectsByGivenDateRange(Date startRange, Date endRange) {
 		// @formatter:off
 		String sql = "select count(*) " + "from metric_event_records e " + "where e.title='Patient' and "
 		        + "(e.date_created between :startRange and :endRange) and " + "e.tags = 'CREATED'";
@@ -69,8 +66,8 @@ public class HibernateMetricsDAO implements MetricsDAO {
 	}
 	
 	@Override
-	public Map<String, Integer> getEncounterObjectTypesCountByGivenDateRange(LocalDateTime startRange,
-			LocalDateTime endRange) {
+	public Map<String, Integer> getEncounterObjectTypesCountByGivenDateRange(Date startRange,
+			Date endRange) {
 		Map<String, Integer> encounterObs = new HashMap<>();
 		// @formatter:off
 		String sql = "select c.name , count(*) " +
