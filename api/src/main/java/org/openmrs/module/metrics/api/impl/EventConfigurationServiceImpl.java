@@ -14,9 +14,7 @@ import org.openmrs.module.metrics.api.model.EventConfiguration;
 import org.openmrs.module.metrics.api.model.GeneralConfiguration;
 import org.openmrs.module.metrics.api.service.EventConfigurationService;
 import org.openmrs.module.metrics.api.utils.EventsUtils;
-import org.springframework.stereotype.Component;
 
-@Component
 public class EventConfigurationServiceImpl implements EventConfigurationService {
 	
 	private HashMap<String, EventConfiguration> eventConfigurationByOpenMrsClass;
