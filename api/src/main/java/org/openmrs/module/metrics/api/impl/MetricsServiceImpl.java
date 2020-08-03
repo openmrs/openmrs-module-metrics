@@ -8,10 +8,8 @@ import org.openmrs.module.metrics.MetricEvent;
 import org.openmrs.module.metrics.api.service.MetricService;
 import org.openmrs.module.metrics.api.db.MetricsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
 @Transactional
 public class MetricsServiceImpl extends BaseOpenmrsService implements MetricService {
 	
