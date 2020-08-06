@@ -16,7 +16,12 @@
 
     <bean id="metrics.JmxReportBuilder"
           class="org.openmrs.module.metrics.builder.JmxReportBuilderImpl">
-        <property name="metricRegistry" ref="metrics.MetricRegistry"/>
+        <!--<property name="metricRegistry" ref="metrics.MetricRegistry"/>-->
+    </bean>
+
+
+    <bean id="metrics.MetricRegistry"
+          class="com.codahale.metrics.MetricRegistry">
     </bean>
 
     <bean id="metrics.MetricHandler"
@@ -24,9 +29,6 @@
         <!--<property name="jmxReportBuilder" ref="metrics.JmxReportBuilder"/>-->
     </bean>
 
-    <bean id="metrics.MetricRegistry"
-          class="com.codahale.metrics.MetricRegistry">
-    </bean>
     <!--<bean id="metrics.MetricsManager"-->
           <!--class="org.openmrs.module.metrics.api.MetricsManager">-->
     <!--</bean>-->

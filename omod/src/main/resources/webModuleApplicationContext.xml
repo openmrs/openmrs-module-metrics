@@ -9,12 +9,10 @@
 
     <context:component-scan base-package="org.openmrs.module.metrics.web" />
 
-    <!--<bean id="metrics.MetricsSpringWebConfiguration"-->
-          <!--class="org.openmrs.module.metrics.util.MetricsSpringWebConfiguration">-->
-    <!--</bean>-->
-
     <bean id="metrics.DefaultMetricsServlet"
           class="org.openmrs.module.metrics.web.DefaultMetricsServlet">
+        <property name="jmxReportBuilder" ref="metrics.JmxReportBuilder"/>
+        <property name="metricHandler" ref="metrics.MetricHandler"/>
     </bean>
 
 </beans>

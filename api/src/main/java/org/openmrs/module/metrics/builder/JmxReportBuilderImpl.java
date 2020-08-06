@@ -14,8 +14,8 @@ import org.slf4j.LoggerFactory;
 public class JmxReportBuilderImpl {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(JmxReportBuilderImpl.class);
-
-	private MetricRegistry metricRegistry;
+	
+	private static MetricRegistry metricRegistry = new MetricRegistry();
 	
 	public MetricRegistry initializeMetricRegistry() {
 		return metricRegistry;
@@ -31,7 +31,9 @@ public class JmxReportBuilderImpl {
 	
 	public MetricRegistry registerNewMetric(MetricRegistry metricRegistry, Object metricValue, String metricName) {
 		metricRegistry.register(metricRegistry.name(MetricscConfigImpl.class, metricName),
-		    new CachedGauge(15, TimeUnit.MINUTES) {
+		    new CachedGauge(
+		                    15, TimeUnit.MINUTES) {
+			    
 			    @Override
 			    protected Object loadValue() {
 				    return metricValue;

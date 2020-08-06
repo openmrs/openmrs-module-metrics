@@ -41,29 +41,37 @@ public class DefaultMetricsServlet extends MetricsServlet {
 	
 	protected transient ObjectMapper mapper = new ObjectMapper();
 	
-	private static MetricRegistry METRIC_REGISTRY = new MetricRegistry();
+//	private static MetricRegistry METRIC_REGISTRY = new MetricRegistry();
 	
-	private MetricHandler metricHandler = new MetricHandler();
+	MetricHandler metricHandler;
 	
-	JmxReportBuilderImpl jmxReportBuilder = new JmxReportBuilderImpl();
+	JmxReportBuilderImpl jmxReportBuilder;
+	
+	public void setJmxReportBuilder(JmxReportBuilderImpl jmxReportBuilder) {
+		this.jmxReportBuilder = jmxReportBuilder;
+	}
+	
+	public void setMetricHandler(MetricHandler metricHandler) {
+		this.metricHandler = metricHandler;
+	}
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		final ServletContext context = config.getServletContext();
-		context.setAttribute(METRICS_REGISTRY, jmxReportBuilder.initializeMetricRegistry());
+		context.setAttribute(METRICS_REGISTRY, this.jmxReportBuilder.initializeMetricRegistry());
 		context.setAttribute(METRIC_FILTER, getMetricFilter());
 	}
 	
-	protected MetricRegistry getMetricRegistry() {
-		Counter counter = METRIC_REGISTRY.counter("m01-counter");
-		counter.inc();
-		
-		Histogram histogram = METRIC_REGISTRY.histogram("m02-histogram");
-		histogram.update(5);
-		histogram.update(20);
-		histogram.update(100);
-		return METRIC_REGISTRY;
-	}
+//	protected MetricRegistry getMetricRegistry() {
+//		Counter counter = METRIC_REGISTRY.counter("m01-counter");
+//		counter.inc();
+//
+//		Histogram histogram = METRIC_REGISTRY.histogram("m02-histogram");
+//		histogram.update(5);
+//		histogram.update(20);
+//		histogram.update(100);
+//		return METRIC_REGISTRY;
+//	}
 	
 	//	public void setMetricHandler(MetricHandler metricHandler) {
 	//		this.metricHandler = metricHandler;
@@ -130,5 +138,4 @@ public class DefaultMetricsServlet extends MetricsServlet {
 			return defaultValue;
 		}
 	}
-	
 }
