@@ -1,22 +1,22 @@
-package org.openmrs.module.metrics.model.impl;
+package org.openmrs.module.metrics.api.model;
 
 import java.util.Map;
 
-import org.openmrs.module.metrics.model.MetricConfigMBean;
+import org.openmrs.module.metrics.api.model.MetricConfigMBean;
 
 public class MetricscConfigImpl implements MetricConfigMBean {
 	
-	private Integer nePatientsRegistered;
+	private Integer newPatientsRegistered;
 	
 	private Map<String, Integer> newEncounters;
 	
 	public MetricscConfigImpl(Integer nePatientsRegistered, Map<String, Integer> newEncounters) {
-		this.nePatientsRegistered = nePatientsRegistered;
+		this.newPatientsRegistered = nePatientsRegistered;
 		this.newEncounters = newEncounters;
 	}
 	
-	public Integer getNePatientsRegistered() {
-		return nePatientsRegistered;
+	public Integer getNewPatientsRegistered() {
+		return newPatientsRegistered;
 	}
 	
 	public Map<String, Integer> getNewEncounters() {

@@ -47,7 +47,22 @@
 				<groupId>org.openmrs.web</groupId>
 				<artifactId>openmrs-web</artifactId>
 				<version>${openmrsPlatformVersion}</version>
-				<type>jar</type>
+				<scope>provided</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.servlet</groupId>
+						<artifactId>jstl</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>javax.servlet</groupId>
+						<artifactId>jsp-api</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>3.1.0</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -94,6 +109,17 @@
 			</dependency>
 			<dependency>
 				<groupId>io.dropwizard.metrics</groupId>
+				<artifactId>metrics-jvm</artifactId>
+				<version>${metrics.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>io.dropwizard.metrics</groupId>
 				<artifactId>metrics-servlets</artifactId>
 				<version>${metrics.version}</version>
 				<exclusions>
@@ -124,23 +150,21 @@
 				<version>${prometheusclient.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.micrometer</groupId>
-				<artifactId>micrometer-core</artifactId>
-				<version>${micrometer.version}</version>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombokVersion}</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>io.micrometer</groupId>
-				<artifactId>micrometer-registry-jmx</artifactId>
-				<version>${micrometer.version}</version>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>28.1-jre</version>
 			</dependency>
-			<dependency>
-				<groupId>io.micrometer</groupId>
-				<artifactId>micrometer-registry-graphite</artifactId>
-				<version>${micrometer.version}</version>
-			</dependency>
-
 		</dependencies>
 	</dependencyManagement>
+
+	<dependencies>
+	</dependencies>
 
 	<repositories>
 		<repository>
@@ -259,9 +283,10 @@
 		<javaVersion>1.8</javaVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<openmrsPlatformVersion>2.1.4</openmrsPlatformVersion>
-		<eventModuleVersion>2.5</eventModuleVersion>
+		<eventModuleVersion>2.8.0-SNAPSHOT</eventModuleVersion>
 		<metrics.version>4.1.7</metrics.version>
 		<prometheusclient.version>0.9.0</prometheusclient.version>
 		<micrometer.version>1.5.1</micrometer.version>
+		<lombokVersion>1.18.10</lombokVersion>
 	</properties>
 </project>

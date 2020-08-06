@@ -29,45 +29,89 @@
 		<aware_of_module>org.openmrs.module.fhir2</aware_of_module>
 	</aware_of_modules>
 
-	<servlet>
-		<servlet-name>PingServlet</servlet-name>
-		<servlet-class>com.codahale.metrics.servlets.PingServlet</servlet-class>
-	</servlet>
-	<filter>
-		<filter-name>Ping</filter-name>
-		<filter-class>org.openmrs.module.metrics.web.filter.RedirectFilter</filter-class>
-		<init-param>
-			<param-name>source-url</param-name>
-			<param-value>/ping</param-value>
-		</init-param>
-		<init-param>
-			<param-name>target-url</param-name>
-			<param-value>/ms/PingServlet</param-value>
-		</init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>Ping</filter-name>
-		<url-pattern>/ping</url-pattern>
-	</filter-mapping>
+	<!--<servlet>-->
+		<!--<servlet-name>PingServlet</servlet-name>-->
+		<!--<servlet-class>com.codahale.metrics.servlets.PingServlet</servlet-class>-->
+	<!--</servlet>-->
+	<!--<filter>-->
+		<!--<filter-name>Ping</filter-name>-->
+		<!--<filter-class>org.openmrs.module.metrics.web.filter.RedirectFilter</filter-class>-->
+		<!--<init-param>-->
+			<!--<param-name>source-url</param-name>-->
+			<!--<param-value>/ping</param-value>-->
+		<!--</init-param>-->
+		<!--<init-param>-->
+			<!--<param-name>target-url</param-name>-->
+			<!--<param-value>/ms/PingServlet</param-value>-->
+		<!--</init-param>-->
+	<!--</filter>-->
+	<!--<filter-mapping>-->
+		<!--<filter-name>Ping</filter-name>-->
+		<!--<url-pattern>/ping</url-pattern>-->
+	<!--</filter-mapping>-->
 
-	<!--Servlet to expose metrics-->
+	<!--<servlet>-->
+		<!--<servlet-name>DefaultMetricsServlet</servlet-name>-->
+		<!--<servlet-class>org.openmrs.module.metrics.web.DefaultMetricsServlet</servlet-class>-->
+	<!--</servlet>-->
+	<!--<filter>-->
+		<!--<filter-name>Metrics</filter-name>-->
+		<!--<filter-class>org.openmrs.module.metrics.web.filter.RedirectFilter</filter-class>-->
+		<!--<init-param>-->
+			<!--<param-name>source-url</param-name>-->
+			<!--<param-value>/metrics</param-value>-->
+		<!--</init-param>-->
+		<!--<init-param>-->
+			<!--<param-name>target-url</param-name>-->
+			<!--<param-value>/ms/DefaultMetricsServlet</param-value>-->
+		<!--</init-param>-->
+	<!--</filter>-->
+	<!--<filter-mapping>-->
+		<!--<filter-name>Metrics</filter-name>-->
+		<!--<url-pattern>/metrics</url-pattern>-->
+	<!--</filter-mapping>-->
+
 	<servlet>
 		<servlet-name>DefaultMetricsServlet</servlet-name>
 		<servlet-class>org.openmrs.module.metrics.web.DefaultMetricsServlet</servlet-class>
 	</servlet>
-	<servlet-mapping>
-		<servlet-name>DefaultMetricsServlet</servlet-name>
+	<filter>
+		<filter-name>Metrics</filter-name>
+		<filter-class>org.openmrs.module.metrics.web.filter.RedirectFilter</filter-class>
+		<init-param>
+			<param-name>source-url</param-name>
+			<param-value>/metrics</param-value>
+		</init-param>
+		<init-param>
+			<param-name>target-url</param-name>
+			<param-value>/ms/DefaultMetricsServlet</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>Metrics</filter-name>
 		<url-pattern>/metrics</url-pattern>
-	</servlet-mapping>
+	</filter-mapping>
+
+	<!--&lt;!&ndash;Servlet to expose metrics&ndash;&gt;-->
+	<!--<servlet>-->
+		<!--<servlet-name>DefaultMetricsServlet</servlet-name>-->
+		<!--<servlet-class>org.openmrs.module.metrics.web.DefaultMetricsServlet</servlet-class>-->
+	<!--</servlet>-->
+	<!--<servlet-mapping>-->
+		<!--<servlet-name>DefaultMetricsServlet</servlet-name>-->
+		<!--<url-pattern>/anedooo</url-pattern>-->
+	<!--</servlet-mapping>-->
+
+
 
 	<!--Listen to global preoperty change-->
-	<bean parent="openmrsEventListeners">
-		<property name="globalPropertyListeners">
-			<list merge="true">
-				<ref bean="GraphiteReporterPlugin" />
-			</list>
-		</property>
-	</bean>
+	<!--<bean parent="openmrsEventListeners">-->
+		<!--<property name="globalPropertyListeners">-->
+			<!--<list merge="true">-->
+				<!--<ref bean="GraphiteReporterPlugin" />-->
+			<!--</list>-->
+		<!--</property>-->
+	<!--</bean>-->
 
 	<!-- Internationalization -->
 	<!-- All message codes should start with @MODULE_ID@.* -->

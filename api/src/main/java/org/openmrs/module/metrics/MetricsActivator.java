@@ -9,52 +9,62 @@
  */
 package org.openmrs.module.metrics;
 
-import org.openmrs.Encounter;
+import static org.openmrs.module.metrics.MetricsConstants.EVENTS_PATH_TO_DEFAULT_CONFIGURATION;
+import static org.openmrs.module.metrics.api.utils.EventsUtils.getOpenMrsClass;
+import static org.openmrs.module.metrics.api.utils.EventsUtils.parseJsonFileToEventConfiguration;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Set;
+
+import org.openmrs.OpenmrsObject;
+import org.openmrs.api.context.Context;
+import org.openmrs.event.Event;
 import org.openmrs.module.BaseModuleActivator;
 import org.openmrs.module.DaemonToken;
 import org.openmrs.module.DaemonTokenAware;
-import org.openmrs.module.metrics.api.MetricsManager;
+import org.openmrs.module.metrics.api.event.MetricsEventListener;
+import org.openmrs.module.metrics.api.model.EventConfiguration;
+import org.openmrs.module.metrics.api.model.GeneralConfiguration;
 import org.openmrs.module.metrics.api.service.EventConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
 
 /**
  * This class contains the logic that is run every time this module is either started or shutdown
  */
-@Component
-public class MetricsActivator extends BaseModuleActivator implements DaemonTokenAware, ApplicationContextAware {
+public class MetricsActivator extends BaseModuleActivator implements DaemonTokenAware {
 	
 	private static final Logger log = LoggerFactory.getLogger(MetricsActivator.class);
 	
-	private static ApplicationContext applicationContext = null;
-	
 	private static DaemonToken daemonToken = null;
-	
-	@Autowired
-	private MetricsManager metricsManager;
-	
-	@Autowired
+
+	private Set<Class<? extends OpenmrsObject>> classesToMonitor = new HashSet<>();
+
+	private boolean hasStarted = false;
+
+	private HashMap<String, EventConfiguration> eventConfigurationByOpenMrsClass;
+
+	private Set<Class<? extends OpenmrsObject>> openMrsClassesToMonitor;
 	private EventConfigurationService eventConfigurationService;
+
+	private final MetricsEventListener eventListener = new MetricsEventListener();
 	
 	/**
 	 * @see #started()
 	 */
+	@Override
 	public void started() {
-		MetricsActivator.applicationContext.getAutowireCapableBeanFactory().autowireBean(this);
-		metricsManager.setDaemonToken(daemonToken);
-		
-		if (eventConfigurationService.getClassesToMonitorFromConfiguration() != null) {
-			metricsManager.setClassesToMonitor(eventConfigurationService.getClassesToMonitorFromConfiguration());
-		} else {
-			metricsManager.addClassToMonitor(Encounter.class);
+		eventConfigurationService = Context.getService(EventConfigurationService.class);
+		openMrsClassesToMonitor = eventConfigurationService.getClassesToMonitorFromConfiguration();
+		eventListener.setToken(daemonToken);
+		for (Class<? extends OpenmrsObject> classToMonitor : openMrsClassesToMonitor) {
+			//all events
+			Event.subscribe(classToMonitor, null, eventListener);
 		}
-		
-		metricsManager.start();
+
+		hasStarted = true;
 		
 		log.info("Started Metrics");
 	}
@@ -62,22 +72,31 @@ public class MetricsActivator extends BaseModuleActivator implements DaemonToken
 	/**
 	 * @see #stopped()
 	 */
-	
+	@Override
 	public void stopped() {
-		if (metricsManager != null) {
-			metricsManager.stop();
+		for (Class<? extends OpenmrsObject> classToMonitor : openMrsClassesToMonitor) {
+			Event.unsubscribe(classToMonitor,null, eventListener);
 		}
+		hasStarted = false;
 		
 		log.info("Shutdown Metrics");
 	}
 	
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		MetricsActivator.applicationContext = applicationContext;
-	}
-	
-	@Override
 	public void setDaemonToken(DaemonToken daemonToken) {
 		MetricsActivator.daemonToken = daemonToken;
+	}
+
+	private void loadEventConfigurations(GeneralConfiguration generalConfiguration) {
+		HashMap<String, EventConfiguration> byOpenMrsClass = new LinkedHashMap<>();
+		Set<Class<? extends OpenmrsObject>> classesToMonitor =  new HashSet<>();
+
+		for (EventConfiguration configuration : generalConfiguration.getEventConfigurations()) {
+			byOpenMrsClass.put(configuration.getOpenMrsClass(), configuration);
+			classesToMonitor.add(getOpenMrsClass(configuration.getOpenMrsClass()));
+		}
+
+		eventConfigurationByOpenMrsClass = byOpenMrsClass;
+		openMrsClassesToMonitor = classesToMonitor;
 	}
 }

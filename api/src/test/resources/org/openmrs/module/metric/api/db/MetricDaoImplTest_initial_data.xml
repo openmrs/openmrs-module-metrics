@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    This Source Code Form is subject to the terms of the Mozilla Public License,
+    v. 2.0. If a copy of the MPL was not distributed with this file, You can
+    obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
+    the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
+
+    Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
+    graphic logo is a trademark of OpenMRS Inc.
+-->
+<dataset>
+    <metric_event_records id="5" uuid="5d6da0f0-44f3-44df-a0bd-b7f36ab4ab65" title="Patient" timeStamp="2020-07-09 16:32:57.0" object_uuid="[NULL]" object="{'rest':'/ws/rest/v1/patient/87e74f45-02cf-4f6d-a909-4699bb6ac35a?v=full','fhir':'/ws/fhir2/R4/Patient/87e74f45-02cf-4f6d-a909-4699bb6ac35a'}" category="patient" tags="CREATED" creator="2" changed_by="[NULL]" date_changed="[NULL]" date_created="2020-07-09 16:32:58.0" date_voided="[NULL]" void_reason="[NULL]" voided="0" voided_by="[NULL]"/>
+    <metric_event_records id="6" uuid="5d6da0f0-ghyu-5678-tyuh-bhj36ab4ab65" title="Encounter" timeStamp="2020-07-09 16:32:57.0" object_uuid="[NULL]" object="{'rest':'/ws/rest/v1/patient/87e74f45-02cf-4f6d-a909-4699bb6ac35a?v=full','fhir':'/ws/fhir2/R4/Patient/87e74f45-02cf-4f6d-a909-4699bb6ac35a'}" category="patient" tags="CREATED" creator="2" changed_by="[NULL]" date_changed="[NULL]" date_created="2020-07-09 16:32:58.0" date_voided="[NULL]" void_reason="[NULL]" voided="0" voided_by="[NULL]"/>
+    <metric_event_records id="7" uuid="5d6da0f0-kliu-klmn-fghj-b7fhjab4ab65" title="Encounter" timeStamp="2020-07-09 16:32:57.0" object_uuid="[NULL]" object="{'rest':'/ws/rest/v1/patient/87e74f45-02cf-4f6d-a909-4699bb6ac35a?v=full','fhir':'/ws/fhir2/R4/Patient/87e74f45-02cf-4f6d-a909-4699bb6ac35a'}" category="patient" tags="CREATED" creator="2" changed_by="[NULL]" date_changed="[NULL]" date_created="2020-07-09 16:32:58.0" date_voided="[NULL]" void_reason="[NULL]" voided="0" voided_by="[NULL]"/>
+    <metric_event_records id="8" uuid="5d6da0f0-vbnm-ghij-nmjl-b7gmnab4ab65" title="Encounter" timeStamp="2020-07-09 16:32:57.0" object_uuid="[NULL]" object="{'rest':'/ws/rest/v1/patient/87e74f45-02cf-4f6d-a909-4699bb6ac35a?v=full','fhir':'/ws/fhir2/R4/Patient/87e74f45-02cf-4f6d-a909-4699bb6ac35a'}" category="patient" tags="CREATED" creator="2" changed_by="[NULL]" date_changed="[NULL]" date_created="2020-07-09 16:32:58.0" date_voided="[NULL]" void_reason="[NULL]" voided="0" voided_by="[NULL]"/>
+</dataset>

@@ -24,8 +24,8 @@ public class RedirectFilter implements Filter {
 	
 	@Override
 	public void init(FilterConfig filterConfig) {
-		sourceUrl = filterConfig.getInitParameter("source-url");
-		targetUrl = filterConfig.getInitParameter("target-url");
+		//		sourceUrl = filterConfig.getInitParameter("source-url");
+		//		targetUrl = filterConfig.getInitParameter("target-url");
 	}
 	
 	@Override
