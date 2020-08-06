@@ -13,7 +13,7 @@ public class JmxReportBuilderImpl {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(JmxReportBuilderImpl.class);
 	
-	private static MetricRegistry metricRegistry;
+	private MetricRegistry metricRegistry;
 	
 	public MetricRegistry initializeMetricRegistry() {
 		return metricRegistry;
