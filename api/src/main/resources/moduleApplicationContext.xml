@@ -33,13 +33,4 @@
         </property>
     </bean>
 
-    <bean parent="serviceContext">
-        <property name="moduleService">
-            <list>
-                <value>org.openmrs.module.metrics.api.service.EventConfigurationService</value>
-                <ref bean="metrics.EventConfigurationService"/>
-            </list>
-        </property>
-    </bean>
-
 </beans>

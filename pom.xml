@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.openmrs.maven.parents</groupId>
-        <artifactId>maven-parent-openmrs-module</artifactId>
-        <version>1.1.1</version>
-    </parent>
+	<parent>
+		<groupId>org.openmrs.maven.parents</groupId>
+		<artifactId>maven-parent-openmrs-module</artifactId>
+		<version>1.1.1</version>
+	</parent>
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>metrics</artifactId>
@@ -47,7 +47,22 @@
 				<groupId>org.openmrs.web</groupId>
 				<artifactId>openmrs-web</artifactId>
 				<version>${openmrsPlatformVersion}</version>
-				<type>jar</type>
+				<scope>provided</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.servlet</groupId>
+						<artifactId>jstl</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>javax.servlet</groupId>
+						<artifactId>jsp-api</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>3.1.0</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -94,6 +109,17 @@
 			</dependency>
 			<dependency>
 				<groupId>io.dropwizard.metrics</groupId>
+				<artifactId>metrics-jvm</artifactId>
+				<version>${metrics.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>io.dropwizard.metrics</groupId>
 				<artifactId>metrics-servlets</artifactId>
 				<version>${metrics.version}</version>
 				<exclusions>
@@ -124,23 +150,41 @@
 				<version>${prometheusclient.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.micrometer</groupId>
-				<artifactId>micrometer-core</artifactId>
-				<version>${micrometer.version}</version>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombokVersion}</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>io.micrometer</groupId>
-				<artifactId>micrometer-registry-jmx</artifactId>
-				<version>${micrometer.version}</version>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>28.1-jre</version>
+			</dependency>
+			<!-- WebServices -->
+			<dependency>
+				<groupId>org.openmrs.module</groupId>
+				<artifactId>webservices.rest-omod-common</artifactId>
+				<version>${webservices.restVersion}</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>io.micrometer</groupId>
-				<artifactId>micrometer-registry-graphite</artifactId>
-				<version>${micrometer.version}</version>
+				<groupId>org.openmrs.distro</groupId>
+				<artifactId>referenceapplication</artifactId>
+				<version>${referenceapplication.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
-
+			<dependency>
+				<groupId>org.openmrs.module</groupId>
+				<artifactId>legacyui-omod</artifactId>
+				<version>${legacyuiVersion}</version>
+				<scope>provided</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<dependencies>
+	</dependencies>
 
 	<repositories>
 		<repository>
@@ -255,13 +299,19 @@
 		</pluginManagement>
 	</build>
 
-    <properties>
+	<properties>
 		<javaVersion>1.8</javaVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<openmrsPlatformVersion>2.1.4</openmrsPlatformVersion>
-		<eventModuleVersion>2.5</eventModuleVersion>
+		<eventModuleVersion>2.8.0-SNAPSHOT</eventModuleVersion>
 		<metrics.version>4.1.7</metrics.version>
 		<prometheusclient.version>0.9.0</prometheusclient.version>
 		<micrometer.version>1.5.1</micrometer.version>
+		<lombokVersion>1.18.10</lombokVersion>
+		<webservices.restVersion>2.16</webservices.restVersion>
+		<webservicesRestModuleVersion>2.6</webservicesRestModuleVersion>
+		<referenceapplication.version>2.8.1</referenceapplication.version>
+		<legacyuiVersion>1.4.0</legacyuiVersion>
+		<uicommonsModuleVersion>2.6.0</uicommonsModuleVersion>
 	</properties>
 </project>

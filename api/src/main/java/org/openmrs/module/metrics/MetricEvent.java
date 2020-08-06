@@ -57,6 +57,9 @@ public class MetricEvent extends BaseOpenmrsData {
 		this.tags = tags;
 	}
 	
+	public MetricEvent() {
+	}
+	
 	@Override
 	public Integer getId() {
 		return id;
@@ -89,5 +92,9 @@ public class MetricEvent extends BaseOpenmrsData {
 	
 	public String getTags() {
 		return tags;
+	}
+
+	public void setTimeStamp(Date timeStamp) {
+		this.timeStamp = timeStamp;
 	}
 }

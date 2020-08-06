@@ -7,9 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -18,14 +15,12 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlets.MetricsServlet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import org.openmrs.module.metrics.api.exceptions.MetricsException;
 import org.openmrs.module.metrics.api.utils.MetricHandler;
 import org.openmrs.module.metrics.builder.JmxReportBuilderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-public class DefaultMetricsServlet extends MetricsServlet {
+public class ServerMetricServlet extends MetricsServlet {
 	
 	public static final String METRICS_REGISTRY = MetricsServlet.class.getCanonicalName() + ".registry";
 	
@@ -34,8 +29,6 @@ public class DefaultMetricsServlet extends MetricsServlet {
 	private static final String CONTENT_TYPE = "application/json";
 	
 	protected String allowedOrigin;
-	
-	protected String jsonpParamName;
 	
 	protected transient ObjectMapper mapper = new ObjectMapper();
 	
@@ -74,35 +67,13 @@ public class DefaultMetricsServlet extends MetricsServlet {
 		if (allowedOrigin != null) {
 			resp.setHeader("Access-Control-Allow-Origin", allowedOrigin);
 		}
-
-		Date startDatetime = new Date();
-		Date endDatetime = new Date();
-		MetricRegistry meterRegistry;
-
-		if (req.getParameter("startDateTime") != null && req.getParameter("endDateTime") != null
-				&& req.getParameter("type") != null) {
-			try {
-				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-				startDatetime = simpleDateFormat.parse(req.getParameter("startDateTime"));
-				endDatetime =  simpleDateFormat.parse(req.getParameter("endDateTime"));
-			}
-			catch (ParseException e) {
-				throw new MetricsException(e);
-			}
-		}
-
 		resp.setContentType(CONTENT_TYPE);
 		resp.setHeader("Cache-Control", "must-revalidate,no-cache,no-store");
 		resp.setStatus(HttpServletResponse.SC_OK);
 
 		try (OutputStream output = resp.getOutputStream()) {
-			if (jsonpParamName != null && req.getParameter(jsonpParamName) != null) {
-				getWriter(req).writeValue(output, new JSONPObject(req.getParameter(jsonpParamName), metricHandler.buildMetricFlow(startDatetime,endDatetime)));
-			} else {
-				meterRegistry = metricHandler.buildMetricFlow(startDatetime,endDatetime);
-
-				getWriter(req).writeValue(output, meterRegistry);
-			}
+			MetricRegistry meterRegistry = metricHandler.buildServerMetricFlow();
+			getWriter(req).writeValue(output, meterRegistry);
 		}
 	}
 	

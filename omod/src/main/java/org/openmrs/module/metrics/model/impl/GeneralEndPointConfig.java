@@ -9,8 +9,8 @@ public class GeneralEndPointConfig {
 	private List<GraphiteConfiguration> graphiteConfigurations;
 	
 	public GeneralEndPointConfig() {
-			graphiteConfigurations = new ArrayList<>();
-		}
+		graphiteConfigurations = new ArrayList<>();
+	}
 	
 	public GeneralEndPointConfig(List<GraphiteConfiguration> graphiteConfigurations) {
 		this.graphiteConfigurations = graphiteConfigurations;
@@ -36,5 +36,4 @@ public class GeneralEndPointConfig {
 	public int hashCode() {
 		return Objects.hash(graphiteConfigurations);
 	}
-	
 }
