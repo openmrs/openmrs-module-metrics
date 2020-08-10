@@ -1,0 +1,18 @@
+[
+  {
+    "id": "metric.manageDashboard.configuration",
+    "description": "metric.configuration.description",
+    "order": 2,
+    "extensions": [
+      {
+        "id": "metric.configuration",
+        "extensionPointId": "org.openmrs.referenceapplication.homepageLink",
+        "type": "link",
+        "order": 5,
+        "label": "Metrics",
+        "url": "metrics/server.page",
+        "icon": "icon-user"
+      }
+    ]
+  }
+]
