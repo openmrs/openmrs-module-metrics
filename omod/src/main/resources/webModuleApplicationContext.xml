@@ -19,4 +19,22 @@
   		    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
   		    http://www.springframework.org/schema/util
   		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+
+    <bean id="metrics.DefaultMetricsServlet"
+          class="org.openmrs.module.metrics.web.DefaultMetricsServlet">
+        <property name="jmxReportBuilder" ref="metrics.JmxReportBuilder"/>
+        <property name="metricHandler" ref="metrics.MetricHandler"/>
+    </bean>
+
+    <bean id="metrics.PluginConfiguration"
+          class="org.openmrs.module.metrics.plugins.PluginConfiguration">
+    </bean>
+
+    <bean id="metrics.GraphiteReporterPlugin"
+          class="org.openmrs.module.metrics.plugins.GraphiteReporterPlugin">
+        <property name="jmxReportBuilder" ref="metrics.JmxReportBuilder"/>
+        <property name="pluginConfiguration" ref="metrics.PluginConfiguration"/>
+    </bean>
+
 </beans>

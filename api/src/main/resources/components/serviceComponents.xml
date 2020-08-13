@@ -2,8 +2,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-<!-- Wraps InsuranceClaimService methods in DB transactions and OpenMRS interceptors,
-         which set audit info like dateCreated, changedBy, etc.-->
+    <!-- Wraps InsuranceClaimService methods in DB transactions and OpenMRS interceptors,
+             which set audit info like dateCreated, changedBy, etc.-->
 
     <bean id="metrics.MetricService"
           class="org.openmrs.module.metrics.api.impl.MetricsServiceImpl">
@@ -12,6 +12,21 @@
 
     <bean id="metrics.EventConfigurationService"
           class="org.openmrs.module.metrics.api.impl.EventConfigurationServiceImpl">
+    </bean>
+
+    <bean id="metrics.JmxReportBuilder"
+          class="org.openmrs.module.metrics.builder.JmxReportBuilderImpl">
+        <property name="metricRegistry" ref="metrics.MetricRegistry"/>
+    </bean>
+
+
+    <bean id="metrics.MetricRegistry"
+          class="com.codahale.metrics.MetricRegistry">
+    </bean>
+
+    <bean id="metrics.MetricHandler"
+          class="org.openmrs.module.metrics.api.utils.MetricHandler">
+        <property name="jmxReportBuilder" ref="metrics.JmxReportBuilder"/>
     </bean>
 
 </beans>

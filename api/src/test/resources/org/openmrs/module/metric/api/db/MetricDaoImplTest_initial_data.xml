@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+    This Source Code Form is subject to the terms of the Mozilla Public License,
+    v. 2.0. If a copy of the MPL was not distributed with this file, You can
+    obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
+    the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
+
+    Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
+    graphic logo is a trademark of OpenMRS Inc.
+-->
+<dataset>
+
+    <encounter_type encounter_type_id="909" name="Consultation" description="Some desc" creator="1"
+                    date_created="2008-08-18 00:00:00.0" retired="false" uuid="759799ab-c9a5-430e-b671-323323ada74e4"/>
+    <encounter encounter_id="890" encounter_type="909"
+               encounter_datetime="2008-08-19 00:00:00.0" creator="1" date_created="2008-08-19 14:09:05.0" voided="false"
+               uuid="bb0af6222-707a-9029-9859-f15206e63ab1"/>
+
+    <encounter_type encounter_type_id="4" name="Hospitalized" description="desc" creator="1"
+                    date_created="2005-01-01 00:00:00.0" retired="false" retired_by="1" uuid="c0c579b0-8e59-401d-8a4a-976a0b183519"/>
+    <encounter encounter_id="891" encounter_type="4"
+               encounter_datetime="2008-08-19 00:00:00.0" creator="1" date_created="2008-08-19 15:09:05.0" voided="false"
+               uuid="cv0af6222-7056-9029-9854-f15206e63ab1"/>
+
+    <metric_event_records metric_event_id="5" uuid="5d6da0f0-44f3-44df-a0bd-b7f36ab4ab65" title="Patient" time_stamp="2020-07-09 16:32:57.0" object_uuid="[NULL]" object="{'rest':'/ws/rest/v1/patient/87e74f45-02cf-4f6d-a909-4699bb6ac35a?v=full','fhir':'/ws/fhir2/R4/Patient/87e74f45-02cf-4f6d-a909-4699bb6ac35a'}" category="patient" tags="CREATED" creator="1" changed_by="[NULL]" date_changed="[NULL]" date_created="2020-07-09 16:32:58.0" date_voided="[NULL]" void_reason="[NULL]" voided="0" voided_by="[NULL]"/>
+    <metric_event_records metric_event_id="6" uuid="5d6da0f0-ghyu-5678-tyuh-bhj36ab4ab65" title="Encounter" time_stamp="2020-07-09 16:32:57.0" object_uuid="bb0af6222-707a-9029-9859-f15206e63ab1" object="{'rest':'/ws/rest/v1/encounter/bb0af6222-707a-9029-9859-f15206e63ab1?v=full','fhir':'/ws/fhir2/R4/Patient/87e74f45-02cf-4f6d-a909-4699bb6ac35a'}" category="encounter" tags="CREATED" creator="1" changed_by="[NULL]" date_changed="[NULL]" date_created="2020-07-09 16:32:58.0" date_voided="[NULL]" void_reason="[NULL]" voided="0" voided_by="[NULL]"/>
+    <metric_event_records metric_event_id="7" uuid="5d6da0f0-kliu-klmn-fghj-b7fhjab4ab65" title="Encounter" time_stamp="2020-07-09 16:32:57.0" object_uuid="cv0af6222-7056-9029-9854-f15206e63ab1" object="{'rest':'/ws/rest/v1/encounter/cv0af6222-7056-9029-9854-f15206e63ab1?v=full','fhir':'/ws/fhir2/R4/Patient/87e74f45-02cf-4f6d-a909-4699bb6ac35a'}" category="encounter" tags="CREATED" creator="1" changed_by="[NULL]" date_changed="[NULL]" date_created="2020-07-09 16:32:58.0" date_voided="[NULL]" void_reason="[NULL]" voided="0" voided_by="[NULL]"/>
+</dataset>

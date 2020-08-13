@@ -18,41 +18,40 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlets.MetricsServlet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.util.JSONPObject;
+import org.openmrs.OpenmrsObject;
+import org.openmrs.module.metrics.api.db.EventAction;
 import org.openmrs.module.metrics.api.exceptions.MetricsException;
 import org.openmrs.module.metrics.api.utils.MetricHandler;
 import org.openmrs.module.metrics.builder.JmxReportBuilderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-public class DefaultMetricsServlet extends MetricsServlet {
-	
+public class SystemMetricServlet extends MetricsServlet {
+
 	public static final String METRICS_REGISTRY = MetricsServlet.class.getCanonicalName() + ".registry";
-	
+
 	public static final String METRIC_FILTER = MetricsServlet.class.getCanonicalName() + ".metricFilter";
-	
+
 	private static final String CONTENT_TYPE = "application/json";
-	
+
 	protected String allowedOrigin;
-	
-	protected String jsonpParamName;
-	
+
 	protected transient ObjectMapper mapper = new ObjectMapper();
-	
+
 	MetricHandler metricHandler;
-	
+
 	JmxReportBuilderImpl jmxReportBuilder;
-	
+
 	@Autowired
 	public void setJmxReportBuilder(JmxReportBuilderImpl jmxReportBuilder) {
 		this.jmxReportBuilder = jmxReportBuilder;
 	}
-	
+
 	@Autowired
 	public void setMetricHandler(MetricHandler metricHandler) {
 		this.metricHandler = metricHandler;
 	}
-	
+
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
@@ -60,14 +59,14 @@ public class DefaultMetricsServlet extends MetricsServlet {
 		context.setAttribute(METRICS_REGISTRY, this.jmxReportBuilder.initializeMetricRegistry());
 		context.setAttribute(METRIC_FILTER, getMetricFilter());
 		super.init(config);
-		
+
 	}
-	
+
 	protected MetricFilter getMetricFilter() {
 		// use the default
 		return MetricFilter.ALL;
 	}
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
@@ -75,18 +74,17 @@ public class DefaultMetricsServlet extends MetricsServlet {
 			resp.setHeader("Access-Control-Allow-Origin", allowedOrigin);
 		}
 
-		Date startDatetime = new Date();
-		Date endDatetime = new Date();
-		MetricRegistry meterRegistry;
-
-		if (req.getParameter("startDateTime") != null && req.getParameter("endDateTime") != null
-				&& req.getParameter("type") != null) {
+		Class<? extends OpenmrsObject> eventClass = null;
+		String dateRange = "";
+		EventAction action = null;
+		if (req.getParameter("class") != null && req.getParameter("dateRange") != null
+				&& req.getParameter("action") != null) {
 			try {
-				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-				startDatetime = simpleDateFormat.parse(req.getParameter("startDateTime"));
-				endDatetime =  simpleDateFormat.parse(req.getParameter("endDateTime"));
+				eventClass = (Class<? extends OpenmrsObject>) Class.forName(req.getParameter("class"));
+				dateRange =  req.getParameter("dateRange");
+				action =  EventAction.valueOf(req.getParameter("action"));
 			}
-			catch (ParseException e) {
+			catch (ClassNotFoundException e) {
 				throw new MetricsException(e);
 			}
 		}
@@ -96,16 +94,11 @@ public class DefaultMetricsServlet extends MetricsServlet {
 		resp.setStatus(HttpServletResponse.SC_OK);
 
 		try (OutputStream output = resp.getOutputStream()) {
-			if (jsonpParamName != null && req.getParameter(jsonpParamName) != null) {
-				getWriter(req).writeValue(output, new JSONPObject(req.getParameter(jsonpParamName), metricHandler.buildMetricFlow(startDatetime,endDatetime)));
-			} else {
-				meterRegistry = metricHandler.buildMetricFlow(startDatetime,endDatetime);
-
-				getWriter(req).writeValue(output, meterRegistry);
-			}
+			MetricRegistry meterRegistry = metricHandler.buildSystemMetricFlow(eventClass, dateRange, action);
+			getWriter(req).writeValue(output, meterRegistry);
 		}
 	}
-	
+
 	protected ObjectWriter getWriter(HttpServletRequest request) {
 		final boolean prettyPrint = Boolean.parseBoolean(request.getParameter("pretty"));
 		if (prettyPrint) {
@@ -113,7 +106,7 @@ public class DefaultMetricsServlet extends MetricsServlet {
 		}
 		return mapper.writer();
 	}
-	
+
 	protected TimeUnit parseTimeUnit(String value, TimeUnit defaultValue) {
 		try {
 			return TimeUnit.valueOf(String.valueOf(value).toUpperCase(Locale.US));
