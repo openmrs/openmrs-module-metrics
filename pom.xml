@@ -303,7 +303,7 @@
 		<javaVersion>1.8</javaVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<openmrsPlatformVersion>2.1.4</openmrsPlatformVersion>
-		<eventModuleVersion>2.8.0-SNAPSHOT</eventModuleVersion>
+		<eventModuleVersion>2.8.0</eventModuleVersion>
 		<metrics.version>4.1.7</metrics.version>
 		<prometheusclient.version>0.9.0</prometheusclient.version>
 		<micrometer.version>1.5.1</micrometer.version>
