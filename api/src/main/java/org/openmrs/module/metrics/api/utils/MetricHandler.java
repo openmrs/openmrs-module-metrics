@@ -1,27 +1,16 @@
 package org.openmrs.module.metrics.api.utils;
 
-import static org.openmrs.module.metrics.MetricsConstants.METRIC_ACTION_LIST;
 import static org.openmrs.module.metrics.MetricsConstants.METRIC_CATEGORY_LIST;
 
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-import com.codahale.metrics.CachedGauge;
-import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.jvm.JvmAttributeGaugeSet;
-import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.metrics.api.db.EventAction;
 import org.openmrs.module.metrics.api.exceptions.MetricsException;
-import org.openmrs.module.metrics.api.model.MetricscConfigImpl;
 import org.openmrs.module.metrics.api.service.MetricService;
 import org.openmrs.module.metrics.builder.JmxReportBuilderImpl;
 import org.slf4j.Logger;
